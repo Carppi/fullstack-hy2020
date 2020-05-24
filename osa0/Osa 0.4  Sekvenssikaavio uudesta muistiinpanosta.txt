@@ -1,0 +1,52 @@
+title Osa 0.4  Sekvenssikaavio uudesta muistiinpanosta
+
+#Tehtävänanto:
+#Tee vastaavanlainen kaavio, joka kuvaa mitä tapahtuu tilanteessa, 
+#missä käyttäjä luo uuden muistiinpanon ollessaan sivulla 
+#https://fullstack-exampleapp.herokuapp.com/notes, eli kirjoittaa 
+#tekstikenttään jotain ja painaa nappia tallenna.
+
+note over selain:
+käyttäjä luo uuden muistiinpanon
+ja painaa nappia tallenna
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+
+note over palvelin:
+palvelin luo muistiinpanon dataa 
+vastaavan olion ja lisää sen
+notes taulukkoon
+end note
+
+palvelin-->selain: HTML-statuskoodi 302 eli uudelleenohjauspyyntö
+
+note over selain:
+Uudelleenohjauspyynnön perusteella
+selain tekee uuden GET-pyynnön 
+notes-sivulle ja sivunlataus alkaa alusta
+end note
+
+#http-post kyselyn jälkeen sivu päivittyy uudelleen samalla tavalla
+#kuin aiemmassa esimerkissä. Toisin sanoen sivu käy läpi samat HTTP-
+#pyynnöt kuin aiemmassa sekvenssi-kaaviossa
+
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+palvelin-->selain: HTML-koodi
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin-->selain: main.css
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin-->selain: main.js
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka pyytää JSON-datan palvelimelta
+end note
+
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin-->selain: [{"content":"HTML is easy","date":"2019-05-23...}, ...]
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end note
