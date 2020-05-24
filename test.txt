@@ -1,1 +1,0 @@
-Tämä tiedosto on touch-komennon ja nano-editorin testaamista varten
