@@ -1,0 +1,30 @@
+title Osa 0.5  Sekvenssikaavio Single Page Appista
+
+#Tehtävänanto:
+#Tee kaavio tilanteesta, missä käyttäjä menee selaimella
+#osoitteeseen https://fullstack-exampleapp.herokuapp.com/spa 
+#eli muistiinpanojen Single Page App-versioon
+
+#SPA-sivusto tekee hyvin vastaavanlaiset pyynnöt kuin alkuperäinen versio
+#Alla oleva sisältö perustuu pitkälti osaan 0.4 ja kurssisivulla jaettuun esimerkkiin 
+
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+palvelin-->selain: HTML-koodi
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin-->selain: main.css
+#SPA-versio eroaa ladattavan Javascript-tiedoston osalta
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js
+palvelin-->selain: spa.js
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka pyytää JSON-datan palvelimelta
+end note
+
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin-->selain: [{"content":"HTML is easy","date":"2019-05-23...}, ...]
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end note

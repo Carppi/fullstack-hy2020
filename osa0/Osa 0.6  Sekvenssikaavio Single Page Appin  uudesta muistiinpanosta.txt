@@ -1,0 +1,33 @@
+title Osa 0.6  Sekvenssikaavio uudesta muistiinpanosta SPA:ssa
+
+#Tehtävänanto:
+#Tee kaavio tilanteesta, missä käyttäjä luo uuden muistiinpanon 
+#single page -versiossa.
+
+note over selain:
+käyttäjä luo uuden muistiinpanon
+ja painaa nappia tallenna
+end note
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän, joka 
+1. luo muistiinpanon, 2. lisää sen muistiinpanolistalle,
+3. päivittää ruudun muistiinpanolistan ja 
+4. lähettää muistiinpanon palvelimelle
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+note over palvelin:
+palvelin luo muistiinpanon dataa 
+vastaavan olion ja lisää sen
+notes taulukkoon
+end note
+
+palvelin-->selain: HTML-statuskoodi 201 created
+
+note over selain:
+Selain lisää consolen logiin palvelimen vastauksen:
+{"message":"note created"}
+
+end note
