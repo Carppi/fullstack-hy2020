@@ -36,7 +36,6 @@ const Statistics = (props) => {
 
   const average = (good - bad) / all
   const positive = good / all * 100 + '%'
-  const [allStatistics, setStatistics] = useState([])
 
   return (
     <div>
