@@ -14,28 +14,48 @@ const Button = (props) => {
 
 //satunnaislukugeneraattorin lähteenä käytetty: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 //funktio palauttaa kokonaisluvun nollan ja max - 1 välillä
-const getRandomInt = (max) => {
+const GetRandomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+//luo nollilla täytetyn taulukon muuttujanaan tarvittava nollien määrä (pohjautuu: https://stackoverflow.com/questions/20222501/how-to-create-a-zero-filled-javascript-array-of-arbitrary-length/22209781)
+const ZeroFilledTable = (noOfZeros) => {
+  return (
+    Array.apply(null, new Array(noOfZeros)).map(Number.prototype.valueOf, 0)
+  )
+}
+
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const anecdotesCount = props.anecdotes.length
+  const [allVotes, setVote] = useState(ZeroFilledTable(anecdotesCount))
 
   const handleNextClick = () => {
 
-    const anecdotesCount = props.anecdotes.length
-    const nextAnecdoteNumber = getRandomInt(anecdotesCount)
-
-    console.log("No of anecdotes: ", anecdotesCount)
-    console.log("Next anecdote: ", nextAnecdoteNumber)
+    const nextAnecdoteNumber = GetRandomInt(anecdotesCount)
+    // console.log("Next anecdote: ", nextAnecdoteNumber)
 
     setSelected(nextAnecdoteNumber)
+  }
+
+  const handleVoteClick = () => {
+    const copiedVotesTable = [...allVotes]
+    console.log(allVotes, copiedVotesTable)
+
+    copiedVotesTable[selected] += 1
+    console.log(allVotes, copiedVotesTable)
+
+    setVote(copiedVotesTable)
+    console.log(allVotes, copiedVotesTable)
   }
 
   return (
     <div>
       {props.anecdotes[selected]}
+      <div>has {allVotes[selected]} votes</div>
       <div>
+        <Button handleClick={handleVoteClick} text="Vote" />
         <Button handleClick={handleNextClick} text="Next anecdote" />
       </div>
     </div>
