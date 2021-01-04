@@ -1,14 +1,42 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = (props) => {
+
+  const { handleClick, text } = props
+
+  return (
+    <button onClick={handleClick}>
+      {text}
+    </button>
+  )
+}
+
+//satunnaislukugeneraattorin lähteenä käytetty: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+//funktio palauttaa kokonaisluvun nollan ja max - 1 välillä
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+
+  const handleNextClick = () => {
+
+    const anecdotesCount = props.anecdotes.length
+    const nextAnecdoteNumber = getRandomInt(anecdotesCount)
+
+    console.log("No of anecdotes: ", anecdotesCount)
+    console.log("Next anecdote: ", nextAnecdoteNumber)
+
+    setSelected(nextAnecdoteNumber)
+  }
 
   return (
     <div>
       {props.anecdotes[selected]}
       <div>
-        <button>Next anecdote</button>
+        <Button handleClick={handleNextClick} text="Next anecdote" />
       </div>
     </div>
   )
