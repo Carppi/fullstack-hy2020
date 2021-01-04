@@ -25,11 +25,19 @@ const ZeroFilledTable = (noOfZeros) => {
   )
 }
 
+// Index of maxvalue palauttaa taulukon isoimman arvon saavan indeksin. Lähde: https://stackoverflow.com/questions/11301438/return-index-of-greatest-value-in-an-array
+const indexOfMaxValue = (table) => {
+  return table.indexOf(Math.max(...table))
+}
+
+
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const anecdotesCount = props.anecdotes.length
   const [allVotes, setVote] = useState(ZeroFilledTable(anecdotesCount))
+  const mostVotedAnecdote = indexOfMaxValue(allVotes)
+  // console.log(mostVotedAnecdote)
 
   const handleNextClick = () => {
 
@@ -41,23 +49,27 @@ const App = (props) => {
 
   const handleVoteClick = () => {
     const copiedVotesTable = [...allVotes]
-    console.log(allVotes, copiedVotesTable)
+    // console.log(allVotes, copiedVotesTable)
 
     copiedVotesTable[selected] += 1
-    console.log(allVotes, copiedVotesTable)
+    // console.log(allVotes, copiedVotesTable)
 
     setVote(copiedVotesTable)
-    console.log(allVotes, copiedVotesTable)
+    // console.log(allVotes, copiedVotesTable)
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]}
-      <div>has {allVotes[selected]} votes</div>
+      <div>This anecdote has {allVotes[selected]} votes</div>
       <div>
         <Button handleClick={handleVoteClick} text="Vote" />
         <Button handleClick={handleNextClick} text="Next anecdote" />
       </div>
+      <h1>Anecdote with most votes</h1>
+      {props.anecdotes[mostVotedAnecdote]}
+      <div>This anecdote has {allVotes[mostVotedAnecdote]} votes</div>
     </div>
   )
 }
