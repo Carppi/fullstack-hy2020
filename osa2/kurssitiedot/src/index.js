@@ -1,41 +1,29 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) => {
+const Header = ({course}) => {
   return (
     <div>
-      <h1>{props.course}</h1>
+      <h1>{course}</h1>
     </div>
   )
 }
 
-const Content = (props) => {
-
-  const parts = props.parts
+const Content = ({ parts }) => {
 
   return (
-
-    <div>
-      { // alla testattuna loopia, joka ei kuitenkaan lopulta toiminut sijoitusvaiheessa
-      /* {parts.forEach(element => {
-        console.log(element);
-        console.log(element.name);
-        <Part partName={element.name} exerciseNumber={element.exercises} />
-      })} */}
-
-      <Part partName={parts[0].name} exerciseNumber={parts[0].exercises} />
-      <Part partName={parts[1].name} exerciseNumber={parts[1].exercises} />
-      <Part partName={parts[2].name} exerciseNumber={parts[2].exercises} />
-    </div>
+    parts.map(part => {
+      return (
+        <Part key={part.id} partName={part.name} exerciseNumber={part.exercises} />
+      )
+    })
   )
+
 }
 
-const Part = (props) => {
-  return (
-    <div>
-      <p>{props.partName} {props.exerciseNumber}</p>
-    </div>
-  )
+const Part = ({ partName, exerciseNumber }) => {
+  //console.log('part component is running')
+  return (<p>{partName} {exerciseNumber}</p>)
 }
 
 const Total = (props) => {
@@ -52,32 +40,47 @@ const Total = (props) => {
   )
 }
 
+const Course = ({ course }) => {
+
+  // console.log('course välittää Headerille:', course.name)
+  // console.log('course välittää Contentille ja partsille:', course.parts)
+
+  return (
+    <div>
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      {/* <Total parts={course.parts} />  add this later*/}
+    </div>
+  )
+}
+
 const App = () => {
 
   const course = {
     name: 'Half Stack application development',
+    id: 1,
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1
       },
       {
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2
       },
       {
         name: 'State of a component',
-        exercises: 14
+        exercises: 14,
+        id: 3
       }
     ]
   }
 
   return (
-
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <Course course={course} />
     </div>
   )
 
