@@ -62,10 +62,10 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    const nameArray = persons.map(person => person.name)
+    const nameArray = persons.map(person => person.name.toLowerCase)
 
     //tarkista onko lisättävä nimi sovelluksen tiedossa
-    if (nameArray.includes(newName)) {
+    if (nameArray.includes(newName.toLowerCase)) {
       window.alert(`${newName} is already added to phonebook`) //jos nimi löytyy, anna virheilmoitus komennolla alert
     } else {
       //jos ei, lisää tiedostoon
