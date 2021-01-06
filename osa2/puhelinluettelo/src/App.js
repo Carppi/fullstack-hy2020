@@ -8,14 +8,22 @@ const App = () => {
   const [newName, setNewName] = useState('')
 
   const addName = (event) => {
-    console.log('submit button clicked', event.target)
     event.preventDefault()
-    const personObject = {
-      name: newName
+    
+    const nameArray = persons.map(person => person.name)
+    
+    //tarkista onko lisättävä nimi sovelluksen tiedossa
+    if (nameArray.includes(newName)) {
+      window.alert(`${newName} is already added to phonebook`) //jos nimi löytyy, anna virheilmoitus komennolla alert
+    } else { 
+      //jos ei, lisää tiedostoon
+      const personObject = {
+        name: newName
+      }
+  
+      setPersons(persons.concat(personObject))
+      setNewName('')
     }
-
-    setPersons(persons.concat(personObject))
-    setNewName('')
 
   }
 
@@ -37,7 +45,6 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
       {persons.map((person) => {
-        console.log(person)
         return <li key={person.name}>{person.name}</li>
       })}
       </ul>
