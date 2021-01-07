@@ -152,6 +152,17 @@ const App = () => {
               setNewNotification(null)
             },5000)
           })
+          .catch(error => {
+            console.log('error',error)
+            console.log('existingPerson',existingPerson)
+            setNewNotification({
+              message: `${existingPerson.name} was already removed from the server`,
+              positive: false
+            })
+            setTimeout(() => {
+              setNewNotification(null)
+            },5000)
+          })
 
       }
     } else {
