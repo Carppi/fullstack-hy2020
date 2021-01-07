@@ -100,7 +100,19 @@ const App = () => {
 
     //tarkista onko lisättävä nimi sovelluksen tiedossa
     if (nameArray.includes(newName.toLowerCase())) {
-      window.alert(`${newName} is already added to phonebook`) //jos nimi löytyy, anna virheilmoitus komennolla alert
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one (${newNumber})?`)) {
+        const existingPerson = persons.find(p => p.name === newName)
+        const changedPerson = {...existingPerson, number: newNumber}
+
+        personService
+          .update(existingPerson.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.id !== existingPerson.id ? p :returnedPerson))
+            setNewName('')
+            setNewNumber('')
+          })
+
+      }
     } else {
       //jos ei, lisää tiedostoon
       const personObject = {
