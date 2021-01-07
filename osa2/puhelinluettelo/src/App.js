@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
+import './index.css'
 
 const Filter = ({ filterValue, filterFunction }) => (
   <div>
@@ -23,7 +24,7 @@ const PersonForm = ({ addPerson, newName, handleNameChange, newNumber, handleNum
   )
 }
 
-const Persons = ({ persons, filter,setPersons }) => {
+const Persons = ({ persons, filter, setPersons, setNewNotification }) => {
 
   const personsToShow = (
     persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
@@ -33,11 +34,12 @@ const Persons = ({ persons, filter,setPersons }) => {
     <table>
       <tbody>
         {personsToShow.map((person) => (
-          <Person 
-            person={person} 
+          <Person
+            person={person}
             key={person.name}
             persons={persons}
             setPersons={setPersons}
+            setNewNotification={setNewNotification}
           />
         )
         )}
@@ -46,7 +48,7 @@ const Persons = ({ persons, filter,setPersons }) => {
   )
 }
 
-const Person = ({ person,persons,setPersons }) => {
+const Person = ({ person, persons, setPersons, setNewNotification }) => {
 
   const deletePerson = () => {
     console.log(person)
@@ -54,8 +56,14 @@ const Person = ({ person,persons,setPersons }) => {
       personService
         .deletePerson(person.id)
         .then(returnedPerson => {
-          console.log('returned person',returnedPerson)
           setPersons(persons.filter(p => p.id !== person.id))
+          setNewNotification({
+            message: `${person.name} was deleted`,
+            positive: true
+          })
+          setTimeout(() => {
+            setNewNotification(null)
+          },5000)
         })
     }
 
@@ -75,12 +83,38 @@ const Person = ({ person,persons,setPersons }) => {
   )
 }
 
+const Notification = ({ notification }) => {
+  if (notification === null) {
+    return null
+  }
+
+  if (notification.positive) {
+    return (
+      <div className="notification">
+        {notification.message}
+      </div>
+    )
+  } else {
+
+    return (
+      <div className="error">
+        {notification.message}
+      </div>
+    )
+  }
+}
+
 const App = () => {
 
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState('')
+  const [notification, setNewNotification] = useState({
+    message: 'some notification happened...',
+    positive: true
+  }
+  )
 
   useEffect(() => {
     personService
@@ -102,14 +136,21 @@ const App = () => {
     if (nameArray.includes(newName.toLowerCase())) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one (${newNumber})?`)) {
         const existingPerson = persons.find(p => p.name === newName)
-        const changedPerson = {...existingPerson, number: newNumber}
+        const changedPerson = { ...existingPerson, number: newNumber }
 
         personService
           .update(existingPerson.id, changedPerson)
           .then(returnedPerson => {
-            setPersons(persons.map(p => p.id !== existingPerson.id ? p :returnedPerson))
+            setPersons(persons.map(p => p.id !== existingPerson.id ? p : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setNewNotification({
+              message: `Phone number of ${returnedPerson.name} was updated to ${returnedPerson.number}`,
+              positive: true
+            })
+            setTimeout(() => {
+              setNewNotification(null)
+            },5000)
           })
 
       }
@@ -127,6 +168,13 @@ const App = () => {
           console.log(returnedPerson)
           setNewName('')
           setNewNumber('')
+          setNewNotification({
+            message: `${returnedPerson.name} was added`,
+            positive: true
+          })
+          setTimeout(() => {
+            setNewNotification(null)
+          },5000)
         })
 
     }
@@ -148,6 +196,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification} />
       <Filter filterValue={filter} filterFunction={handleFilter} />
       <h3>Add a new</h3>
       <PersonForm
@@ -158,10 +207,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons 
-        persons={persons} 
+      <Persons
+        persons={persons}
         filter={filter}
         setPersons={setPersons}
+        setNewNotification={setNewNotification}
       />
     </div>
   )
