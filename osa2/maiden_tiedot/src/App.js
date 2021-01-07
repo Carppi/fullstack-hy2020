@@ -7,7 +7,7 @@ const Filter = ({ filterValue, filterFunction }) => (
   </div>
 )
 
-const Countries = ({ countries, filter }) => {
+const Countries = ({ countries, filter, setNewFilter }) => {
 
   const countriesToShow = (
     countries.filter(country => (
@@ -24,13 +24,7 @@ const Countries = ({ countries, filter }) => {
     )
   } else if (countriesToShow.length > 1) {
     return (
-      <table>
-        <tbody>
-          {countriesToShow.map(country => (
-            <Country country={country} key={country.alpha3Code} />
-          ))}
-        </tbody>
-      </table>
+      <CountryList countriesToShow={countriesToShow} setNewFilter={setNewFilter}/>
     )
   } else if (countriesToShow.length === 1) {
     return (
@@ -45,11 +39,34 @@ const Countries = ({ countries, filter }) => {
 
 }
 
-const Country = ({ country }) => {
+const CountryList = ({countriesToShow, setNewFilter}) => {
+  return (
+    <table>
+      <tbody>
+        {countriesToShow.map(country => (
+          <CountryShort country={country} key={country.alpha3Code} setNewFilter={setNewFilter}/>
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+const CountryShort = ({ country, setNewFilter }) => {
+  
+  const handleClick = () => {
+    console.log('Button clicked in ',country.name)
+    setNewFilter(country.name)
+  }
+
   return (
     <tr>
       <td>
         {country.name}
+      </td>
+      <td>
+        <button onClick={handleClick}>
+          show
+        </button>
       </td>
     </tr>
   )
@@ -108,7 +125,7 @@ const App = () => {
     <div>
       <h1>Country finder</h1>
       <Filter filterValue={filter} filterFunction={handleFilter} />
-      <Countries countries={countries} filter={filter} />
+      <Countries countries={countries} filter={filter} setNewFilter={setNewFilter}/>
     </div>
   );
 }
