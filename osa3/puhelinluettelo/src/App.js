@@ -111,7 +111,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState('')
   const [notification, setNewNotification] = useState({
-    message: 'some notification happened...',
+    message: null,
     positive: true
   }
   )
