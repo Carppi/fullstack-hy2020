@@ -110,11 +110,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState('')
-  const [notification, setNewNotification] = useState({
-    message: null,
-    positive: true
-  }
-  )
+  const [notification, setNewNotification] = useState([])
 
   useEffect(() => {
     personService
