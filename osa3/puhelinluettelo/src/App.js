@@ -110,7 +110,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState('')
-  const [notification, setNewNotification] = useState([])
+  const [notification, setNewNotification] = useState(null)
 
   useEffect(() => {
     personService
