@@ -183,6 +183,16 @@ const App = () => {
             setNewNotification(null)
           },5000)
         })
+        .catch(error => {
+          console.log(error.response.data)
+          setNewNotification({
+            message: `${error.response.data.error}`,
+            positive: false
+          })
+          setTimeout(() => {
+            setNewNotification(null)
+          },5000)
+        })
 
     }
 
