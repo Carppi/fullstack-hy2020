@@ -1,0 +1,14 @@
+//kaikkien blogien pyytäminen
+GET http://localhost:3003/api/blogs
+
+###
+//blogin lisääminen tietokantaan
+POST http://localhost:3003/api/blogs
+Content-type: application/json
+
+{
+  "title": "Very interesting blog",
+  "author": "Someone smart",
+  "url": "url of the blog would be here",
+  "likes": 125
+}
