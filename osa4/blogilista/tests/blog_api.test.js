@@ -37,6 +37,11 @@ describe('HTTP GET request to /api/blogs', () => {
     )
   })
 
+  test('blogs have a correct ID', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+  })
+
 })
 
 afterAll(() => {
