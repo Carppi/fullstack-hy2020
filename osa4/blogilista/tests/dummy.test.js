@@ -83,6 +83,25 @@ const blogsWithTwoDuplicates = [
   }
 ]
 
+const blogsWithTwoAuthors = [
+  {
+    _id: "5a422b3a1b54a676234d17f9",
+    title: "Canonical string reduction",
+    author: "Author 1",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+    __v: 0
+  },
+  {
+    _id: "1234567890",
+    title: "Canonical string reduction",
+    author: "Author 2",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+    __v: 0
+  }
+]
+
 test('dummy returns one', () => {
   const blogs = []
 
@@ -136,14 +155,13 @@ describe('favorite blog', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual(
       {
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
+        title: 'Canonical string reduction',
+        author: 'Edsger W. Dijkstra',
         likes: 12
       }
     )
   })
 
-  /*
   test('of a list with two duplicates is calculated right', () => {
     const result = listHelper.favoriteBlog(blogsWithTwoDuplicates)
     expect(result).toEqual(
@@ -154,5 +172,48 @@ describe('favorite blog', () => {
       }
     )
   })
-  */
+  
+})
+
+describe('most blogs', () => {
+  
+  test('of empty list is working', () => {
+    const result = listHelper.mostBlogs(emptyBlog)
+    expect(result).toEqual(
+      {
+        author: 'no blogs available',
+        blogs: 0
+      }
+    )
+  })
+
+  test('when list has only one blog equals to the same author and 1', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual(
+      {
+        author: 'Edsger W. Dijkstra',
+        blogs: 1
+      }
+    )
+  })
+
+  test('of a bigger list is calculated right', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(
+      {
+        author: 'Robert C. Martin',
+        blogs: 3
+      }
+    )
+  })
+
+  test('of a list with two duplicates is calculated right', () => {
+    const result = listHelper.mostBlogs(blogsWithTwoAuthors)
+    expect(result).toEqual(
+      {
+        author: "Author 2",
+        blogs: 1
+      }
+    )
+  })
 })
