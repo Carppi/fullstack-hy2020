@@ -41,7 +41,7 @@ const mostBlogs = (blogs) => {
 
   const authorArray = blogs.map(blog => blog.author)
   //console.log('authorArray',authorArray)
-  const mostActiveAuthor = _.chain(authorArray)
+  const authorWithMostBlogs = _.chain(authorArray)
     .countBy()
     .toPairs()
     .max(_.last)
@@ -56,17 +56,41 @@ const mostBlogs = (blogs) => {
     }
   } else {
     return {
-      author: _.first(mostActiveAuthor),
-      blogs: _.last(mostActiveAuthor)
+      author: _.first(authorWithMostBlogs),
+      blogs: _.last(authorWithMostBlogs)
     }
   }
-  
 
+
+}
+
+// pohjautuu https://stackoverflow.com/questions/38774763/using-lodash-to-sum-values-by-key/38774930
+const mostLikes = (blogs) => {
+
+  const blogsByAuthor = _(blogs)
+    .groupBy('author')
+    .map((objects, key) => ({
+      author: key,
+      likes: _.sumBy(objects, 'likes')
+    }))
+    .maxBy('likes')
+
+  //console.log('blogsByAuthor: ',blogsByAuthor)
+
+  if (blogs.length === 0) {
+    return {
+      author: 'no authors / blogs available',
+      likes: 0
+    }
+  } else {
+    return blogsByAuthor
+  }
 }
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
