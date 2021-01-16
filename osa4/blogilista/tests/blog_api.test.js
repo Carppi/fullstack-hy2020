@@ -21,7 +21,7 @@ describe('HTTP GET request to /api/blogs', () => {
       .expect('Content-Type', /application\/json/)
   })
 
-  test('all blogs are returned', async () => {
+  test('all blogs are returned (i.e. blogcount is correct)', async () => {
     const response = await api.get('/api/blogs')
   
     expect(response.body).toHaveLength(helper.initialBlogs.length)
