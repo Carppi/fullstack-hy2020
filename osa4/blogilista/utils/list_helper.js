@@ -18,7 +18,7 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
 
-  const favBlog = _.maxBy(blogs, o => o.likes)
+  const favBlog = _.maxBy(blogs, 'likes')
   //console.log(favBlog,'blogs available:',blogs.length !== 0)
   
   if (blogs.length === 0) {
