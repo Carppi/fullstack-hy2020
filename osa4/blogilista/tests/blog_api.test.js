@@ -1,6 +1,7 @@
 const { TestScheduler } = require('jest')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const _ = require('lodash')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
@@ -68,6 +69,21 @@ describe('HTTP POST request to /api/blogs', () => {
     expect(titles).toContain(
       'First class tests'
     )
+  })
+
+  test('if no value of likes is given, return 0', async () => {
+    const newBlog = helper.blogWithNoLikes
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+
+    const response = await api.get('/api/blogs')
+
+    const addedBlog = _.findLast(response.body, {'title': 'Blog with no likes'})
+
+    expect(addedBlog.likes).toBeDefined()
+    expect(addedBlog.likes).toEqual(0)
   })
 })
 
