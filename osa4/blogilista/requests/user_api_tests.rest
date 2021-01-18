@@ -22,3 +22,55 @@ Content-type: application/json
   "name": "Teppo Testaaja",
   "password": "salainen"
 }
+
+###
+//käyttäjän lisääminen tietokantaan lyhyellä nimellä
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "username": "te",
+  "name": "Teppo Testaaja",
+  "password": "salainen"
+}
+
+###
+//käyttäjän lisääminen tietokantaan ilman nimeä
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "name": "Teppo Testaaja",
+  "password": "salainen"
+}
+
+###
+//käyttäjän lisääminen tietokantaan lyhyellä salasanalla
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "username": "tester",
+  "name": "Teppo Testaaja",
+  "password": "12"
+}
+
+###
+//käyttäjän lisääminen tietokantaan ilman salasanaa
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "username": "tester",
+  "name": "Teppo Testaaja"
+}
+
+###
+//käyttäjän lisääminen tietokantaan ilman käyttäjänimeä
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "name": "Teppo Testaaja",
+  "password": "123456"
+}

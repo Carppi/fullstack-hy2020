@@ -4,10 +4,14 @@ const uniqueValidator = require('mongoose-unique-validator')
 const userSchema = mongoose.Schema({
   username: {
     type: String,
-    unique: true
+    unique: true,
+    minlength: 3,
+    required: true
   },
   name: String,
-  passwordHash: String // mahdollista laajentaa kattamaan blogeja: https://fullstackopen.com/osa4/kayttajien_hallinta
+  passwordHash: {
+    type:String
+  } // mahdollista laajentaa kattamaan blogeja: https://fullstackopen.com/osa4/kayttajien_hallinta
 })
 
 userSchema.plugin(uniqueValidator)
