@@ -23,3 +23,7 @@ Content-type: application/json
   "url": "url of the blog would be here",
   "likes": 125
 }
+
+###
+//deleten testaaminen
+DELETE http://localhost:3003/api/blogs/60034b85abc5943f711e00d7
