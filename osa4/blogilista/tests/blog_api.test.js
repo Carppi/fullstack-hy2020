@@ -80,11 +80,32 @@ describe('HTTP POST request to /api/blogs', () => {
 
     const response = await api.get('/api/blogs')
 
-    const addedBlog = _.findLast(response.body, {'title': 'Blog with no likes'})
+    const addedBlog = _.findLast(response.body, { 'title': 'Blog with no likes' })
 
     expect(addedBlog.likes).toBeDefined()
     expect(addedBlog.likes).toEqual(0)
   })
+
+  test('if no value of title is given, return 400 Bad request', async () => {
+    const newBlog = helper.blogWithNoTitle
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+  })
+
+  test('if no value of url is given, return 400 Bad request', async () => {
+    const newBlog = helper.blogWithNoUrl
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+  })
+
 })
 
 afterAll(() => {

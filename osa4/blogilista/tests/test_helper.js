@@ -43,15 +43,31 @@ const newBlogs = [
   }
 ]
 
-const blogWithNoLikes = 
-  {
-    title: "Blog with no likes",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll"
-  }
+const blogWithNoLikes =
+{
+  title: "Blog with no likes",
+  author: "Robert C. Martin",
+  url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll"
+}
+
+const blogWithNoTitle =
+{
+  author: "Robert C. Martin",
+  url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+  likes: 2
+}
+
+const blogWithNoUrl =
+{
+  title: "Type wars",
+  author: "Robert C. Martin",
+  likes: 2
+}
 
 module.exports = {
   initialBlogs,
   newBlogs,
-  blogWithNoLikes
+  blogWithNoLikes,
+  blogWithNoTitle,
+  blogWithNoUrl
 }

@@ -12,3 +12,14 @@ Content-type: application/json
   "url": "url of the blog would be here",
   "likes": 125
 }
+
+###
+//blogin lisääminen tietokantaan ilman titleä
+POST http://localhost:3003/api/blogs
+Content-type: application/json
+
+{
+  "author": "Someone smart",
+  "url": "url of the blog would be here",
+  "likes": 125
+}
