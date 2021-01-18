@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 //pohjautuu dummy.test.js tiedoston blogeihin, joista valittu kolme ensimmäistä
 const initialBlogs = [
@@ -69,11 +70,17 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(u => u.toJSON())
+}
+
 module.exports = {
   initialBlogs,
   newBlogs,
   blogWithNoLikes,
   blogWithNoTitle,
   blogWithNoUrl,
-  blogsInDb
+  blogsInDb,
+  usersInDb
 }

@@ -1,0 +1,24 @@
+//kaikkien käyttäjien pyytäminen
+GET http://localhost:3003/api/users
+
+###
+//käyttäjän lisääminen tietokantaan
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "username": "root",
+  "name": "Superuser",
+  "password": "ekstrasalainen"
+}
+
+###
+//käyttäjän lisääminen tietokantaan
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+  "username": "tester",
+  "name": "Teppo Testaaja",
+  "password": "salainen"
+}
