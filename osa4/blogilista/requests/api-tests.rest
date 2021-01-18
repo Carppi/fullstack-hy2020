@@ -26,4 +26,32 @@ Content-type: application/json
 
 ###
 //deleten testaaminen
-DELETE http://localhost:3003/api/blogs/60034b85abc5943f711e00d7
+DELETE http://localhost:3003/api/blogs/60034ac296de4d3f0bebb173
+
+###
+//PUT pyyntö
+PUT http://localhost:3003/api/blogs/60034aa396de4d3f0bebb172
+Content-Type: application/json
+
+{
+    "likes": 5
+}
+
+###
+//PUT pyyntö, päivitä liket ja titteli
+PUT http://localhost:3003/api/blogs/60034aa396de4d3f0bebb172
+Content-Type: application/json
+
+{
+    "title": "New and very smart title",
+    "likes": 100
+}
+###
+//PUT pyyntö väärään id:hen
+PUT http://localhost:3003/api/blogs/123456
+Content-Type: application/json
+
+{
+    "title": "New and very smart title",
+    "likes": 100
+}

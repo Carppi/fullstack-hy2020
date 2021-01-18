@@ -7,6 +7,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const blog = require('../models/blog')
 
 describe('when there is initially some notes saved', () => {
   beforeEach(async () => {
@@ -119,13 +120,68 @@ describe('when there is initially some notes saved', () => {
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
-      
+
       const blogTitlesAtEnd = blogsAtEnd
         .map(r => r.title)
 
       expect(blogTitlesAtEnd).not.toContain(blogToDelete.title)
 
     })
+  })
+
+  describe('editing of a blog', () => {
+    test('succeeds with adding one like to an existing entry with all inputs', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+      const likesAtStart = blogToUpdate.likes
+      blogToUpdate.likes = likesAtStart + 1
+
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(blogToUpdate)
+        .expect(200)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd.find(blog => blog.id === blogToUpdate.id).likes)
+        .toEqual(likesAtStart + 1)
+
+    })
+
+    test('succeeds with adding one like to an existing entry with id and likes', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+      const likesAtStart = blogToUpdate.likes
+    
+      const updatedBlog = {
+        id: blogToUpdate.id,
+        likes: likesAtStart + 1
+      }
+
+      await api
+        .put(`/api/blogs/${updatedBlog.id}`)
+        .send(updatedBlog)
+        .expect(200)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd.find(blog => blog.id === updatedBlog.id).likes)
+        .toEqual(likesAtStart + 1)
+
+    })
+
+    test('wrong id return 500 Internal server error', async () => {
+      
+      const updatedBlog = {
+        "id": "123456",
+        "title": "New and very smart title",
+        "likes": 100
+      }
+
+      await api
+        .put(`/api/blogs/${updatedBlog.id}`)
+        .send(updatedBlog)
+        .expect(500)
+    })
+
   })
 })
 
