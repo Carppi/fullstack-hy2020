@@ -5,20 +5,23 @@ const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
-    .find({}).populate('user', {username:1, name:1})
+    .find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
 
 blogsRouter.post('/', async (request, response) => {
 
   const body = request.body
-  
+
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
+  console.log('decodedToken', decodedToken)
   const user = await User.findById(decodedToken.id)
-  
+
+  console.log('user', user)
+
   const blog = new Blog({
     title: body.title === undefined ? false : body.title,
     author: body.author === undefined ? false : body.author,
@@ -26,7 +29,7 @@ blogsRouter.post('/', async (request, response) => {
     likes: body.likes === undefined ? false : body.likes,
     user: user._id == undefined ? false : user._id
   })
-  
+
 
   if (blog.title && blog.url) {
 
@@ -49,8 +52,27 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  console.log('decodedToken', decodedToken)
+  const user = await User.findById(decodedToken.id)
+
+  console.log('request.params.id', request.params.id)
+  const blog = await Blog.findById(request.params.id)
+
+  console.log('user', user)
+  console.log('blog', blog)
+
+  if (blog.user.toString() === user._id.toString()) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } else {
+    response.status(401).json({ error: 'only own blogs can be deleted' })
+  }
+
 })
 
 blogsRouter.put('/:id', async (request, response) => {

@@ -39,7 +39,7 @@ Content-type: application/json
 
 ###
 //deleten testaaminen
-DELETE http://localhost:3003/api/blogs/600618003dbc2e13e6a6a497
+DELETE http://localhost:3003/api/blogs/600709586cb33c35cbb5a261
 
 ###
 //PUT pyyntö

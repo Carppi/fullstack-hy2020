@@ -8,6 +8,16 @@ Content-Type: application/json
 }
 
 ###
+//onnistuva pyyntö
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "tester",
+  "password": "salainen"
+}
+
+###
 //väärä salasana
 POST http://localhost:3003/api/login
 Content-Type: application/json
@@ -45,3 +55,19 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTAxODY5Mn0.G91nTH1RWGAiFsk7u3n_uMHp6ZK
+
+###
+//deleten testaaminen tokenilla
+DELETE http://localhost:3003/api/blogs/6007068ff83da934aa7a4ddf
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTAyMTIxM30.oLOp7Izj0lHxY7Atx2tro_hfLkdLIGNdnpp6yYN4OiY
+
+###
+//deleten testaaminen ilman tokenia
+DELETE http://localhost:3003/api/blogs/600709586cb33c35cbb5a261
+
+###
+// eri käyttäjän blogin poistaminen (Teppo Testaaja yrittää poistaa rootin blogin)
+DELETE http://localhost:3003/api/blogs/60063b1fc48d75291f0dcc38
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoiNjAwNWYyZGRlMTYwMGU4MWM4ZGRhNjkxIiwiaWF0IjoxNjExMDc1MDQ0fQ.cDO8J-PniBYDiypYcvJ0oE2r9sUGqbFwvyFYEC-zcEQ
