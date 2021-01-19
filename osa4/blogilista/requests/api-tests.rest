@@ -25,8 +25,21 @@ Content-type: application/json
 }
 
 ###
+//blogin lisääminen tietokantaan userId:n kanssa
+POST http://localhost:3003/api/blogs
+Content-type: application/json
+
+{
+  "title": "Very interesting blog",
+  "author": "Someone smart",
+  "url": "url of the blog would be here",
+  "likes": 125,
+  "userId": "6005f2d8e1600e81c8dda690"
+}
+
+###
 //deleten testaaminen
-DELETE http://localhost:3003/api/blogs/60034ac296de4d3f0bebb173
+DELETE http://localhost:3003/api/blogs/600618003dbc2e13e6a6a497
 
 ###
 //PUT pyyntö

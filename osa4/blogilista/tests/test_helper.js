@@ -70,9 +70,23 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const initialUsers = () => {
+  const userTable = []
+  const user1 = new User({ username: 'root', name: 'Superuser', password: 'sekret' })
+  const user2 = new User({ username: 'user2', name: 'User 2', password: 'salasana' })
+  userTable.push(user1,user2)
+  return userTable
+}
+
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
+}
+
+const getFirstUserId = async () => {
+  const users = await usersInDb()
+  const firstUser = await users[0]
+  return await firstUser.id
 }
 
 module.exports = {
@@ -82,5 +96,7 @@ module.exports = {
   blogWithNoTitle,
   blogWithNoUrl,
   blogsInDb,
+  initialUsers,
+  getFirstUserId,
   usersInDb
 }

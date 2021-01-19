@@ -11,7 +11,13 @@ const userSchema = mongoose.Schema({
   name: String,
   passwordHash: {
     type:String
-  } // mahdollista laajentaa kattamaan blogeja: https://fullstackopen.com/osa4/kayttajien_hallinta
+  },
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Blog'
+    }
+  ],
 })
 
 userSchema.plugin(uniqueValidator)
