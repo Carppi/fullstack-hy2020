@@ -1,0 +1,47 @@
+//onnistuva pyyntö
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "ekstrasalainen"
+}
+
+###
+//väärä salasana
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "abcdef"
+}
+
+###
+//väärä käyttäjä
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "doesnotexist",
+  "password": "abcdef"
+}
+
+### 
+// POST with token
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTAxODY5Mn0.G91nTH1RWGAiFsk7u3n_uMHp6ZKo90bV1MdK4ESiv4E
+
+{
+  "title": "authenticated blog",
+  "author": "Real User",
+  "url": "url of the blog would be here",
+  "likes": 99
+}
+
+### 
+// POST with wrong token
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTAxODY5Mn0.G91nTH1RWGAiFsk7u3n_uMHp6ZK
