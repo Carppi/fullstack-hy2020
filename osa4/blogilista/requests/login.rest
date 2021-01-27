@@ -41,12 +41,22 @@ Content-Type: application/json
 // POST with token
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTAyMTIxM30.oLOp7Izj0lHxY7Atx2tro_hfLkdLIGNdnpp6yYN4OiY
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTc4MTAzMn0.6yCiX6DVyL5Bx4GJ0VfoDgJZXQsDxoQRT1rJYQcky1M
 
 {
   "title": "authenticated blog",
   "author": "Real User",
-  "url": "url of the blog would be here",
+  "url": "url of the blog would be here"
+}
+
+### 
+// POST without title
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwMDVmMmQ4ZTE2MDBlODFjOGRkYTY5MCIsImlhdCI6MTYxMTc4MDc1N30.mH7ScUIknLkXBc-kt7frBtplL9WNg7hhYy2yn8EOhNY
+
+{
+  "author": "Real User",
   "likes": 99
 }
 

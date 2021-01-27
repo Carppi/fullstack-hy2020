@@ -17,37 +17,20 @@ blogsRouter.post('/', async (request, response) => {
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  console.log('decodedToken', decodedToken)
+  //console.log('decodedToken', decodedToken)
   const user = await User.findById(decodedToken.id)
 
-  console.log('user', user)
+  const blog = new Blog(body)
 
-  const blog = new Blog({
-    title: body.title === undefined ? false : body.title,
-    author: body.author === undefined ? false : body.author,
-    url: body.url === undefined ? false : body.url,
-    likes: body.likes === undefined ? false : body.likes,
-    user: user._id == undefined ? false : user._id
-  })
-
-
-  if (blog.title && blog.url) {
-
-    if (!blog.likes) {
-      blog.likes = 0
-    }
-
-    const savedBlog = await blog.save()
-    //console.log(savedBlog,savedBlog._id)
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
-    response.status(201).json(savedBlog)
-  } else {
-    response.status(400).json({
-      error: 'title or url missing'
-    })
+  if (!blog.likes) {
+    blog.likes = 0
   }
 
+  const savedBlog = await blog.save()
+  //console.log(savedBlog,savedBlog._id)
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
+  response.status(201).json(savedBlog)
 
 })
 
@@ -57,14 +40,14 @@ blogsRouter.delete('/:id', async (request, response) => {
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  console.log('decodedToken', decodedToken)
+  //console.log('decodedToken', decodedToken)
   const user = await User.findById(decodedToken.id)
 
-  console.log('request.params.id', request.params.id)
+  //console.log('request.params.id', request.params.id)
   const blog = await Blog.findById(request.params.id)
 
-  console.log('user', user)
-  console.log('blog', blog)
+  //console.log('user', user)
+  //console.log('blog', blog)
 
   if (blog.user.toString() === user._id.toString()) {
     await Blog.findByIdAndRemove(request.params.id)

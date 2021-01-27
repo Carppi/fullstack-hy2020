@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 //pohjautuu dummy.test.js tiedoston blogeihin, joista valittu kolme ensimmäistä
 const initialBlogs = [
@@ -70,10 +71,15 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
-const initialUsers = () => {
+const initialUsers = async () => {
   const userTable = []
-  const user1 = new User({ username: 'root', name: 'Superuser', password: 'sekret' })
-  const user2 = new User({ username: 'user2', name: 'User 2', password: 'salasana' })
+  const saltRounds = 10
+    
+  //const hash1 = await bcrypt.hash('sekret', saltRounds)
+  const user1 = new User({ username: 'root', name: 'Superuser', passwordHash: await bcrypt.hash('sekret', saltRounds) })
+
+  //const hash2 = await bcrypt.hash('salasana', saltRounds)
+  const user2 = new User({ username: 'user2', name: 'User 2', passwordHash: await bcrypt.hash('salasana', saltRounds) })
   userTable.push(user1,user2)
   return userTable
 }
