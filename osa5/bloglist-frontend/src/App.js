@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import BlogList from './components/BlogList'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,7 +12,7 @@ const App = () => {
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
 
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -45,7 +47,17 @@ const App = () => {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setNotification({ message: 'A new blog "' + returnedBlog.title + '" by ' + returnedBlog.author + ' added', positive: true })
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       })
+      .catch(error => {
+        setNotification({ message: 'Adding a new blog failed due to the following error: ' + error, positive: false })
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      });
   }
 
   const handleLogin = async (event) => {
@@ -64,20 +76,25 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
+
+      setNotification({ message: 'login succeeded', positive: true })
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
+      }, 5000)
+    } catch (exception) {
+      setNotification({ message: 'wrong username or password', positive: false })
+      setTimeout(() => {
+        setNotification(null)
       }, 5000)
     }
   }
 
   const loginForm = () => (
     <>
-      <h2>Login to application</h2>
+      <h3>Login to application</h3>
       <form onSubmit={handleLogin}>
         <div>
-          username: 
+          username:
           <input
             type="text"
             value={username}
@@ -86,7 +103,7 @@ const App = () => {
           />
         </div>
         <div>
-          password: 
+          password:
           <input
             type="password"
             value={password}
@@ -102,47 +119,52 @@ const App = () => {
   const blogForm = () => (
     <form onSubmit={addBlog}>
       <div>
-          Title: 
+        Title:
           <input
-            type="text"
-            value={newTitle}
-            name="NewTitle"
-            onChange={({ target }) => setNewTitle(target.value)}
-          />
-        </div>
-        <div>
-          Author: 
+          type="text"
+          value={newTitle}
+          name="NewTitle"
+          onChange={({ target }) => setNewTitle(target.value)}
+        />
+      </div>
+      <div>
+        Author:
           <input
-            type="text"
-            value={newAuthor}
-            name="NewAuthor"
-            onChange={({ target }) => setNewAuthor(target.value)}
-          />
-        </div>
-        <div>
-          Url: 
+          type="text"
+          value={newAuthor}
+          name="NewAuthor"
+          onChange={({ target }) => setNewAuthor(target.value)}
+        />
+      </div>
+      <div>
+        Url:
           <input
-            type="text"
-            value={newUrl}
-            name="NewUrl"
-            onChange={({ target }) => setNewUrl(target.value)}
-          />
-        </div>
+          type="text"
+          value={newUrl}
+          name="NewUrl"
+          onChange={({ target }) => setNewUrl(target.value)}
+        />
+      </div>
       <button type="submit">save</button>
     </form>
   )
 
   const logOut = () => {
     //console.log('logging out')
-    return window.localStorage.removeItem('loggedBlogappUser')
+    window.localStorage.removeItem('loggedBlogappUser')
+    setNotification({ message: 'User logged out', positive: true })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   return (
     <div>
+      <h2>Blogs</h2>
+      <Notification notification={notification} />
       {user === null ?
         loginForm() :
         <>
-          <h2>Blogs</h2>
           <p>{user.name} logged in</p> <button type="button" onClick={logOut}>logout</button>
           <h2>Create new</h2>
           {blogForm()}
