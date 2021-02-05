@@ -58,6 +58,30 @@ const App = () => {
       });
   }
 
+  const likeBlog = (id) => {
+    const blog = blogs.find(n => n.id === id)
+    const changedBlog = { 
+      ...blog,
+      likes: blog.likes + 1
+    }
+    const filteredBlog = { 
+      title: blog.title, 
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1, 
+      user: blog.user.id 
+    }
+
+    blogService
+      .update(id, filteredBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
+      })
+      .catch(error => {
+        showNotification('Error in liking the blog', false)
+      })
+  }
+
   const handleLogin = async (username, password) => {
 
     try {
@@ -109,7 +133,10 @@ const App = () => {
         <>
           <p>{user.name} logged in</p> <button type="button" onClick={logOut}>logout</button>
           {blogForm()}
-          <BlogList blogs={blogs} />
+          <BlogList
+            blogs={blogs}
+            likeBlog={likeBlog}
+          />
         </>
       }
     </div>

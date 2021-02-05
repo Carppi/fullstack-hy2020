@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, likeBlog }) => {
 
+  console.log('blog',blog)
   const [showAll, setShowAll] = useState(false)
 
   return (
@@ -16,7 +17,7 @@ const Blog = ({ blog }) => {
       {showAll ?
         <ul>
           <li>Url: {blog.url}</li>
-          <li>Likes: {blog.likes} <button>like</button></li>
+          <li>Likes: {blog.likes} <button onClick={() => likeBlog(blog.id)}>like</button></li>
           <li>User: {blog.user.name}</li>
         </ul> :
         <></>}

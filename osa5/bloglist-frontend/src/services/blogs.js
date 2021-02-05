@@ -21,6 +21,10 @@ const create = async newObject => {
   return response.data
 }
 
-//update can be created here (esim. https://fullstackopen.com/osa5/kirjautuminen_frontendissa#muistiinpanojen-luominen). Add also to export in that case. 
+const update = async (id, newObject) => {
+  const request = axios.put(`${ baseUrl }/${id}`, newObject)
+  const response = await request
+  return response.data
+}
 
-export default { getAll, create, setToken }
+export default { getAll, create, setToken, update }
