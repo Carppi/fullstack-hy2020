@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 const Blog = ({ blog, likeBlog }) => {
 
-  console.log('blog',blog)
   const [showAll, setShowAll] = useState(false)
 
   return (
