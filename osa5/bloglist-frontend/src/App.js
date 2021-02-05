@@ -11,8 +11,6 @@ import BlogForm from './components/BlogForm'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [notification, setNotification] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
@@ -32,6 +30,13 @@ const App = () => {
     }
   }, [])
 
+  const showNotification = (message, positive) => {
+    setNotification({ message: message, positive: positive })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
   const addBlog = (blogObject) => {
 
     blogFormRef.current.toggleVisibility()
@@ -40,21 +45,20 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNotification({ message: 'A new blog "' + returnedBlog.title + '" by ' + returnedBlog.author + ' added', positive: true })
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
+        showNotification(
+          'A new blog "' + returnedBlog.title + '" by ' + returnedBlog.author + ' added',
+          true
+        )
       })
       .catch(error => {
-        setNotification({ message: 'Adding a new blog failed due to the following error: ' + error, positive: false })
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
+        showNotification(
+          'Adding a new blog failed due to the following error: ' + error,
+          false
+        )
       });
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const handleLogin = async (username, password) => {
 
     try {
       const user = await loginService.login({
@@ -67,27 +71,15 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
 
-      setNotification({ message: 'login succeeded', positive: true })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      showNotification('login succeeded', true)
     } catch (exception) {
-      setNotification({ message: 'wrong username or password', positive: false })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      showNotification('wrong username or password', false)
     }
   }
 
   const loginForm = () => (
     <LoginForm
-      username={username}
-      password={password}
-      handleUsernameChange={({ target }) => setUsername(target.value)}
-      handlePasswordChange={({ target }) => setPassword(target.value)}
       handleSubmit={handleLogin}
     />
   )
@@ -104,12 +96,8 @@ const App = () => {
   )
 
   const logOut = () => {
-    //console.log('logging out')
     window.localStorage.removeItem('loggedBlogappUser')
-    setNotification({ message: 'User logged out', positive: true })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+    showNotification('User logged out', true)
   }
 
   return (
