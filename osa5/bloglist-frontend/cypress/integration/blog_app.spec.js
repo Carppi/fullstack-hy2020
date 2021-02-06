@@ -36,5 +36,22 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'Teppo Testaaja logged in')
     })
 
+    describe.only('When logged in', function () {
+      beforeEach(function () {
+        cy.get('#username').type('tester')
+        cy.get('#password').type('salainen')
+        cy.get('#login-button').click()
+      })
+
+      it('A blog can be created', function () {
+        cy.get('#show-blog-form-button').click()
+        cy.get('#title').type('Cypress test title')
+        cy.get('#author').type('Cypress test Author')
+        cy.get('#url').type('Cypress test URL')
+        cy.get('#submit-blog-button').click()
+        cy.get('.blog-list').contains('Cypress test title')
+      })
+    })
+
   })
 })
