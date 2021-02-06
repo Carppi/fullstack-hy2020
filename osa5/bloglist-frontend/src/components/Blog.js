@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, likeBlog, user }) => {
+const Blog = ({ blog, likeBlog, user, removeBlog }) => {
 
   const [showAll, setShowAll] = useState(false)
 
-  const createdByUser = user.username===blog.user.username
+  const deleteBlog = () => {
+    if (
+      window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
+    ) {
+      removeBlog(blog.id)
+    }
+  }
+
+  const createdByUser = user.username === blog.user.username
   return (
-    <div className="blog">
+    <div className='blog'>
       <div>
         {blog.title} by {blog.author}
         <button onClick={() => setShowAll(!showAll)}>
@@ -21,7 +29,7 @@ const Blog = ({ blog, likeBlog, user }) => {
             <li>Likes: {blog.likes} <button onClick={() => likeBlog(blog.id)}>like</button></li>
             <li>User: {blog.user.name}</li>
           </ul>
-          {createdByUser ? <button>remove</button> : <></>}
+          {createdByUser ? <button onClick={() => deleteBlog()}>remove</button> : <></>}
         </> :
         <></>}
     </div>

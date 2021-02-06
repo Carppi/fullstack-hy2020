@@ -124,6 +124,12 @@ const App = () => {
     showNotification('User logged out', true)
   }
 
+  const removeBlog = (id) => {
+    blogService.deleteBlog(id)
+    setBlogs(blogs.filter(p => p.id !== id))
+    showNotification(`${blogs.find(n => n.id === id).title} deleted`,true)
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -137,6 +143,7 @@ const App = () => {
             blogs={blogs}
             likeBlog={likeBlog}
             user={user}
+            removeBlog={removeBlog}
           />
         </>
       }
