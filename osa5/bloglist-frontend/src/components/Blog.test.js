@@ -41,25 +41,50 @@ describe('user and blog as pre-requisite', () => {
       )
     })
 
-    test('clicking the view button renders likes and url', async () => {
+    describe('clicking the view button', () => {
 
-      const component = render(
-        <Blog
-          blog={blog}
-          user={user}
-        />
-      )
+      test('renders likes and url', async () => {
 
-      const button = component.container.querySelector('.viewButton')
-      fireEvent.click(button)
+        const component = render(
+          <Blog
+            blog={blog}
+            user={user}
+          />
+        )
 
-      const div = component.container.querySelector('.blog')
-      expect(div).toHaveTextContent(
-        'Test Url'
-      )
-      expect(div).toHaveTextContent(
-        'Likes'
-      )
+        const button = component.container.querySelector('.viewButton')
+        fireEvent.click(button)
+
+        const div = component.container.querySelector('.blog')
+        expect(div).toHaveTextContent(
+          'Test Url'
+        )
+        expect(div).toHaveTextContent(
+          'Likes'
+        )
+      })
+
+      test('and clicking like twice calls event handler twice', async () => {
+
+        const mockHandler = jest.fn()
+
+        const component = render(
+          <Blog
+            blog={blog}
+            user={user}
+            likeBlog= {mockHandler}
+          />
+        )
+
+        const button = component.container.querySelector('.viewButton')
+        fireEvent.click(button)
+
+        const likeButton = component.container.querySelector('.likeButton')
+        fireEvent.click(likeButton)
+        fireEvent.click(likeButton)
+
+        expect(mockHandler.mock.calls).toHaveLength(2)
+      })
     })
   })
 })
