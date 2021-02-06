@@ -36,11 +36,10 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'Teppo Testaaja logged in')
     })
 
-    describe.only('When logged in', function () {
+    describe('When logged in', function () {
+
       beforeEach(function () {
-        cy.get('#username').type('tester')
-        cy.get('#password').type('salainen')
-        cy.get('#login-button').click()
+        cy.login({ username: 'tester', password: 'salainen' })
       })
 
       it('A blog can be created', function () {
@@ -51,6 +50,42 @@ describe('Blog app', function () {
         cy.get('#submit-blog-button').click()
         cy.get('.blog-list').contains('Cypress test title')
       })
+
+      describe('and three blogs added', function () {
+
+        beforeEach(function () {
+
+          cy.createBlog({
+            title: 'First title',
+            author: 'Cypress test Author',
+            blogUrl: 'Cypress test URL'
+          })
+
+          cy.createBlog({
+            title: 'Second title',
+            author: 'Cypress test Author',
+            blogUrl: 'Cypress test URL'
+          })
+
+          cy.createBlog({
+            title: 'Third title',
+            author: 'Cypress test Author',
+            blogUrl: 'Cypress test URL'
+          })
+
+        })
+
+        it('A blog can be liked', function () {
+          cy.contains('Second title')
+            .find('.viewButton').click()
+
+          cy.contains('Second title').parent().should('contain', 'Likes: 0')
+          cy.contains('Second title').parent().find('.likeButton').click()
+          cy.contains('Second title').parent().should('contain', 'Likes: 1')
+
+        })
+      })
+
     })
 
   })
