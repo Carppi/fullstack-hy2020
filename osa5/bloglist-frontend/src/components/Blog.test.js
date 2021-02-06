@@ -1,0 +1,58 @@
+import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+import { render, fireEvent } from '@testing-library/react'
+//import { prettyDOM } from '@testing-library/dom' //pienempien osien tulostamiseen
+import Blog from './Blog'
+//import { likeBlog, removeBlog } from '../App'
+describe('user and blog as pre-requisite', () => {
+  const user = {
+    id: '6011de0ba8bfb2178d29d6f1',
+    username: 'root',
+    name: 'Superuser'
+  }
+
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'Test Author',
+    url: 'Test Url',
+    user: user.id
+  }
+  describe('without button pressed', () => {
+    test('renders content and not likes nor url', () => {
+
+      const component = render(
+        <Blog
+          blog={blog}
+          user={user}
+        />
+      )
+
+      const div = component.container.querySelector('.blog')
+      expect(div).toHaveTextContent(
+        'Component testing is done with react-testing-library'
+      )
+
+      expect(div).not.toHaveTextContent(
+        'Test Url'
+      )
+
+      expect(div).not.toHaveTextContent(
+        'Likes'
+      )
+    })
+
+    /*test('clicking the button calls event handler once', async () => {
+
+      const mockHandler = jest.fn()
+
+      const component = render(
+        <Blog blog={blog} likeBlog={mockHandler} />
+      )
+
+      const button = component.getByText('make not important')
+      fireEvent.click(button)
+
+      expect(mockHandler.mock.calls).toHaveLength(1)
+    })*/
+  })
+})
