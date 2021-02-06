@@ -41,18 +41,25 @@ describe('user and blog as pre-requisite', () => {
       )
     })
 
-    /*test('clicking the button calls event handler once', async () => {
-
-      const mockHandler = jest.fn()
+    test('clicking the view button renders likes and url', async () => {
 
       const component = render(
-        <Blog blog={blog} likeBlog={mockHandler} />
+        <Blog
+          blog={blog}
+          user={user}
+        />
       )
 
-      const button = component.getByText('make not important')
+      const button = component.container.querySelector('.viewButton')
       fireEvent.click(button)
 
-      expect(mockHandler.mock.calls).toHaveLength(1)
-    })*/
+      const div = component.container.querySelector('.blog')
+      expect(div).toHaveTextContent(
+        'Test Url'
+      )
+      expect(div).toHaveTextContent(
+        'Likes'
+      )
+    })
   })
 })
