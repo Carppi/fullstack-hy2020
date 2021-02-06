@@ -136,6 +136,7 @@ const App = () => {
           <BlogList
             blogs={blogs}
             likeBlog={likeBlog}
+            user={user}
           />
         </>
       }
