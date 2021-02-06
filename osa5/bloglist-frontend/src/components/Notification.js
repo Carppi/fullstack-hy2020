@@ -18,7 +18,7 @@ const Notification = ({ notification }) => {
         {notification.message}
       </div>
     )
-  } 
+  }
 }
 
 Notification.propTypes = {

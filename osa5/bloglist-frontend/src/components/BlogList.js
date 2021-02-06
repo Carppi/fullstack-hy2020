@@ -3,7 +3,7 @@ import Blog from './Blog'
 import PropTypes from 'prop-types'
 
 const BlogList = ({ blogs, likeBlog, user, removeBlog }) => {
-  
+
   return (
     <div>
       <h3>List of blogs</h3>
@@ -23,9 +23,9 @@ const BlogList = ({ blogs, likeBlog, user, removeBlog }) => {
 }
 
 BlogList.propTypes = {
-  blogs: PropTypes.array.isRequired, 
-  likeBlog: PropTypes.func.isRequired, 
-  user: PropTypes.object.isRequired, 
+  blogs: PropTypes.array.isRequired,
+  likeBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
   removeBlog: PropTypes.func.isRequired
 }
 

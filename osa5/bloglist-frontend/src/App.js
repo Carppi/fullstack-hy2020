@@ -55,29 +55,29 @@ const App = () => {
           'Adding a new blog failed due to the following error: ' + error,
           false
         )
-      });
+      })
   }
 
   const likeBlog = (id) => {
     const blog = blogs.find(n => n.id === id)
-    const changedBlog = { 
+    const changedBlog = {
       ...blog,
       likes: blog.likes + 1
     }
-    const filteredBlog = { 
-      title: blog.title, 
+    const filteredBlog = {
+      title: blog.title,
       author: blog.author,
       url: blog.url,
-      likes: blog.likes + 1, 
-      user: blog.user.id 
+      likes: blog.likes + 1,
+      user: blog.user.id
     }
 
     blogService
       .update(id, filteredBlog)
-      .then(returnedBlog => {
+      .then(() => {
         setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
       })
-      .catch(error => {
+      .catch(() => {
         showNotification('Error in liking the blog', false)
       })
   }
@@ -127,7 +127,7 @@ const App = () => {
   const removeBlog = (id) => {
     blogService.deleteBlog(id)
     setBlogs(blogs.filter(p => p.id !== id))
-    showNotification(`${blogs.find(n => n.id === id).title} deleted`,true)
+    showNotification(`${blogs.find(n => n.id === id).title} deleted`, true)
   }
 
   return (
