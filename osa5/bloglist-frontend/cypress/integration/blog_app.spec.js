@@ -97,6 +97,14 @@ describe('Blog app', function () {
 
         })
 
+        it('Blogs are sorted by likes', function () {
+          cy.get('.blog').then( blogs => {
+            cy.wrap(blogs[0]).contains('Third title')
+            cy.wrap(blogs[1]).contains('First title')
+            cy.wrap(blogs[2]).contains('Second title')
+          })
+        })
+
         describe('and a new user created logs in', function () {
           beforeEach(function () {
             cy.logout()
@@ -114,7 +122,7 @@ describe('Blog app', function () {
               .find('.viewButton').click()
 
             cy.get('.blog-list').should('contain', 'Second title')
-            cy.contains('Second title').parent().should('not.contain','.deleteButton')
+            cy.contains('Second title').parent().should('not.contain', '.deleteButton')
 
           })
         })
