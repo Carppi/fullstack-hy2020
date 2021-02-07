@@ -58,7 +58,8 @@ describe('Blog app', function () {
           cy.createBlog({
             title: 'First title',
             author: 'Cypress test Author',
-            blogUrl: 'Cypress test URL'
+            blogUrl: 'Cypress test URL',
+            likes: 5
           })
 
           cy.createBlog({
@@ -70,7 +71,8 @@ describe('Blog app', function () {
           cy.createBlog({
             title: 'Third title',
             author: 'Cypress test Author',
-            blogUrl: 'Cypress test URL'
+            blogUrl: 'Cypress test URL',
+            likes: 10
           })
 
         })
