@@ -137,7 +137,7 @@ const App = () => {
       {user === null ?
         loginForm() :
         <>
-          <p>{user.name} logged in</p> <button type="button" onClick={logOut}>logout</button>
+          <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
           {blogForm()}
           <BlogList
             blogs={blogs}

@@ -45,3 +45,8 @@ Cypress.Commands.add('createBlog', ({ title, author, blogUrl }) => {
 
   cy.visit('http://localhost:3000')
 })
+
+Cypress.Commands.add('logout', () => {
+  localStorage.removeItem('loggedBlogappUser')
+  cy.visit('http://localhost:3000')
+})

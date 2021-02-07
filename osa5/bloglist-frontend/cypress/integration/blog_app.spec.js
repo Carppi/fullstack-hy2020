@@ -84,6 +84,38 @@ describe('Blog app', function () {
           cy.contains('Second title').parent().should('contain', 'Likes: 1')
 
         })
+
+        it('A blog can be deleted', function () {
+          cy.contains('Second title')
+            .find('.viewButton').click()
+
+          cy.get('.blog-list').should('contain', 'Second title')
+          cy.contains('Second title').parent().find('.deleteButton').click()
+          cy.get('.blog-list').should('not.contain', 'Second title')
+
+        })
+
+        describe('and a new user created logs in', function () {
+          beforeEach(function () {
+            cy.logout()
+            const user = {
+              name: 'Second User',
+              username: 'user2',
+              password: 'password'
+            }
+            cy.request('POST', 'http://localhost:3001/api/users/', user)
+            cy.login({ username: 'user2', password: 'password' })
+          })
+
+          it('A blog of another user cannot be deleted', function () {
+            cy.contains('Second title')
+              .find('.viewButton').click()
+
+            cy.get('.blog-list').should('contain', 'Second title')
+            cy.contains('Second title').parent().should('not.contain','.deleteButton')
+
+          })
+        })
       })
 
     })

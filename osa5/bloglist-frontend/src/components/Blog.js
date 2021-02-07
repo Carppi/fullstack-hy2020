@@ -37,7 +37,7 @@ const Blog = ({ blog, likeBlog, user, removeBlog }) => {
             </li>
             <li>User: {blog.user.name}</li>
           </ul>
-          {createdByUser ? <button onClick={() => deleteBlog()}>remove</button> : <></>}
+          {createdByUser ? <button className="deleteButton" onClick={() => deleteBlog()}>remove</button> : <></>}
         </> :
         <></>}
     </div>
