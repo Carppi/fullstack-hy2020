@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     anecdoteService
       .getAll().then(anecdotes => dispatch(initializeAnecdotes(anecdotes)))
-  })
+  }, [dispatch])
   return (
     <div>
       <h2>Anecdotes</h2>
