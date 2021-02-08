@@ -14,7 +14,17 @@ export const notificationChange = notification => {
   }
 }
 
-export const notificationZero = () => {
+export const setNotification = (notification, duration) => {
+  return async dispatch => {
+    console.log('showNotification running', notification)
+    dispatch(notificationChange(notification))
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, duration * 1000)
+  }
+}
+
+export const clearNotification = () => {
   return {
     type: 'SET_NOTIFICATION',
     notification: null
