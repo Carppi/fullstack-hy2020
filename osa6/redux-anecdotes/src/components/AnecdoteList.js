@@ -5,8 +5,19 @@ import { notificationChange, notificationZero } from '../reducers/notificationRe
 
 const AnecdoteList = () => {
 
-  const anecdotes = useSelector(state => state.anecdotes)
   const dispatch = useDispatch()
+
+  const anecdotes = useSelector(state => {
+    return state.anecdotes
+      .filter(anecdote => (
+        anecdote
+          .content
+          .toLowerCase()
+          .includes(
+            state.filter.toLowerCase()
+          )
+      ))
+  })
 
   const showNotification = (notification) => {
     console.log('showNotification running', notification)
