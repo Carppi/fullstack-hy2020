@@ -4,7 +4,9 @@ import {
   Switch,
   Route,
   Link,
-  useParams
+  useParams,
+  useHistory,
+  Redirect
 } from "react-router-dom"
 
 const Menu = () => {
@@ -60,6 +62,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const history = useHistory()
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -69,6 +73,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
+    props.createNotification(`a new anecdote "${content}" created`,10)
   }
 
   return (
@@ -108,6 +114,25 @@ const Anecdote = ({ anecdotes }) => {
   )
 }
 
+const Notification = ({message}) => {
+  
+  const notificationStyle = {
+    padding: 5,
+    border: 'solid Red',
+    borderWidth: 2
+  }
+
+  if (message === null || message === '') {
+    return null
+  }
+
+  return (
+    <div style={notificationStyle}>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -127,6 +152,14 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+
+  const createNotification = (message, duration) => {
+    setNotification(message)
+    setTimeout(
+      () => setNotification(null),
+      duration * 1000
+    )
+  }
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
@@ -152,7 +185,7 @@ const App = () => {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
-
+        <Notification message={notification} />
         <Switch>
           <Route path="/anecdotes/:id">
             <Anecdote anecdotes={anecdotes} />
@@ -161,7 +194,7 @@ const App = () => {
             <About />
           </Route>
           <Route path="/create">
-            <CreateNew addNew={addNew} />
+            <CreateNew addNew={addNew} createNotification={createNotification}/>
           </Route>
           <Route path="/">
             <AnecdoteList anecdotes={anecdotes} />
