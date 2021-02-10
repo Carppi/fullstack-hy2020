@@ -7,7 +7,8 @@ const AnecdoteList = (props) => {
 
   const vote = (anecdote) => {
     props.voteTo(anecdote)
-    props.setNotification(`you voted '${anecdote.content}'`, 5)
+    const timeoutID = props.timeoutID
+    props.setNotification(`you voted '${anecdote.content}'`, 5, timeoutID)
   }
 
   return (
@@ -30,6 +31,13 @@ const AnecdoteList = (props) => {
 }
 
 const mapStateToProps = (state) => {
+
+  let timeoutID = null
+
+  if (state.notification && state.notification.timeoutID) {
+    timeoutID = state.notification.timeoutID
+  }
+
   return {
     anecdotes: state.anecdotes
       .filter(anecdote => (
@@ -39,7 +47,8 @@ const mapStateToProps = (state) => {
           .includes(
             state.filter.toLowerCase()
           )
-      ))
+      )),
+      timeoutID
   }
 }
 

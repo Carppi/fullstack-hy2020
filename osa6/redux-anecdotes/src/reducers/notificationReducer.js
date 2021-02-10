@@ -7,24 +7,28 @@ const notificationReducer = (state = null, action) => {
   }
 }
 
-export const notificationChange = notification => {
-  return {
-    type: 'SET_NOTIFICATION',
-    notification
-  }
-}
-
-export const setNotification = (notification, duration) => {
+export const setNotification = (notification, duration, timeOutID) => {
   return async dispatch => {
-    console.log('showNotification running', notification)
+    
+    clearTimeout(timeOutID)
     dispatch(notificationChange(notification))
-    setTimeout(() => {
+    const newTimeoutID = setTimeout(() => {
       dispatch(clearNotification())
     }, duration * 1000)
+
+    dispatch(notificationChange(notification,newTimeoutID))
   }
 }
 
-export const clearNotification = () => {
+const notificationChange = (notification,timeoutID) => {
+  const updatedNotification = timeoutID ? {message: notification, timeoutID} : {message: notification}
+  return {
+    type: 'SET_NOTIFICATION',
+    notification: updatedNotification
+  }
+}
+
+const clearNotification = () => {
   return {
     type: 'SET_NOTIFICATION',
     notification: null

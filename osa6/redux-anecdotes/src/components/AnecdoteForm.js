@@ -8,7 +8,8 @@ const AnecdoteForm = (props) => {
   const addAnecdote = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-    props.setNotification(`'${content}' was added`,5)
+    const timeoutID = props.timeoutID
+    props.setNotification(`'${content}' was added`, 5, timeoutID)
     event.target.anecdote.value = ''
     props.createAnecdote(content)
   }
@@ -30,8 +31,21 @@ const mapDispatchToProps = {
   createAnecdote
 }
 
+const mapStateToProps = (state) => {
+
+  let timeoutID = null
+
+  if (state.notification && state.notification.timeoutID) {
+    timeoutID = state.notification.timeoutID
+  }
+
+  return {
+    timeoutID
+  }
+}
+
 const ConnectedAnecdoteForm = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AnecdoteForm)
 
