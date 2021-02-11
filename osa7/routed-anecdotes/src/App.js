@@ -86,21 +86,23 @@ const CreateNew = (props) => {
     info.reset()
   }
 
+  const removeReset = ({reset, ...rest}) => rest //käytetty pohjana: https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
-          <input {...content} />
+          <input {...removeReset(content)} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...removeReset(author)} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...removeReset(info)} />
         </div>
         <button type="submit">create</button>
         <input type="reset" />
