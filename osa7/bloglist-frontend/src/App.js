@@ -7,10 +7,14 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
 import BlogForm from './components/BlogForm'
+import { setNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
-  const [notification, setNotification] = useState(null)
+
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
@@ -31,10 +35,7 @@ const App = () => {
   }, [])
 
   const showNotification = (message, positive) => {
-    setNotification({ message: message, positive: positive })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+    dispatch(setNotification({ message, positive }, 5))
   }
 
   const addBlog = (blogObject) => {
@@ -133,7 +134,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification notification={notification} />
+      <Notification/>
       {user === null ?
         loginForm() :
         <>
