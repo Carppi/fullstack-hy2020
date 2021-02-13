@@ -9,6 +9,7 @@ import './index.css'
 import BlogForm from './components/BlogForm'
 import { setNotification } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
+import { createBlog, initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -20,10 +21,8 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -35,28 +34,15 @@ const App = () => {
   }, [])
 
   const showNotification = (message, positive) => {
-    dispatch(setNotification({ message, positive }, 5))
+    dispatch(setNotification({ message, positive }))
   }
 
   const addBlog = (blogObject) => {
 
     blogFormRef.current.toggleVisibility()
 
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        showNotification(
-          'A new blog "' + returnedBlog.title + '" by ' + returnedBlog.author + ' added',
-          true
-        )
-      })
-      .catch(error => {
-        showNotification(
-          'Adding a new blog failed due to the following error: ' + error,
-          false
-        )
-      })
+    dispatch(createBlog({ blogObject, showNotification }))
+
   }
 
   const likeBlog = (id) => {
@@ -134,14 +120,13 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification/>
+      <Notification />
       {user === null ?
         loginForm() :
         <>
           <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
           {blogForm()}
           <BlogList
-            blogs={blogs}
             likeBlog={likeBlog}
             user={user}
             removeBlog={removeBlog}

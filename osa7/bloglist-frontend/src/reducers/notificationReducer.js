@@ -1,5 +1,4 @@
 const notificationReducer = (state = null, action) => {
-  console.log('reducer running', state)
   switch (action.type) {
   case 'SET_NOTIFICATION':
     return action.notification
@@ -8,7 +7,8 @@ const notificationReducer = (state = null, action) => {
   }
 }
 
-export const setNotification = (notification, duration) => {
+export const setNotification = (notification) => {
+  const duration = 5
   return async dispatch => {
 
     dispatch(notificationChange(notification))
