@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
+import { Alert } from '@material-ui/lab'
+
 const Notification = () => {
 
   const notification = useSelector(state => state.notification)
@@ -12,15 +14,15 @@ const Notification = () => {
 
   if (notification.positive === true) {
     return (
-      <div className='notification'>
+      <Alert severity='success'>
         {notification.message}
-      </div>
+      </Alert>
     )
   } else {
     return (
-      <div className='error'>
+      <Alert severity='error'>
         {notification.message}
-      </div>
+      </Alert>
     )
   }
 }
