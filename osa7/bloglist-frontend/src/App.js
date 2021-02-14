@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  Switch, Route/*, Link*/
+  Switch, Route, useRouteMatch/*, Link*/
 } from 'react-router-dom'
 
 import Notification from './components/Notification'
@@ -9,6 +9,7 @@ import LoginForm from './components/LoginForm'
 import BlogView from './components/BlogView'
 import Users from './components/Users'
 import User from './components/User'
+import SingleBlog from './components/SingleBlog'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -63,6 +64,11 @@ const App = () => {
 
   const user = useSelector(state => state.user)
 
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const blogId = blogMatch
+    ? blogMatch.params.id
+    : null
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -77,6 +83,9 @@ const App = () => {
             </Route>
             <Route path="/users">
               <Users />
+            </Route>
+            <Route path="/blogs/:id">
+              <SingleBlog id={blogId}/>
             </Route>
             <Route path="/">
               <BlogView />
