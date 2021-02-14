@@ -3,6 +3,11 @@ import { useDispatch } from 'react-redux'
 import Togglable from '../components/Togglable'
 import { createBlog } from '../reducers/blogReducer'
 
+import {
+  Button,
+  TextField
+} from '@material-ui/core'
+
 const BlogForm = () => {
 
   const [newTitle, setNewTitle] = useState('')
@@ -40,36 +45,37 @@ const BlogForm = () => {
   const blogForm = () => (
     <form onSubmit={addBlog} className='blogForm'>
       <div>
-        Title:
-        <input
+        <TextField
+          label='title'
           id='title'
-          type="text"
           value={newTitle}
-          name="NewTitle"
           onChange={({ target }) => setNewTitle(target.value)}
         />
       </div>
       <div>
-        Author:
-        <input
+        <TextField
+          label='author'
           id='author'
-          type="text"
           value={newAuthor}
-          name="NewAuthor"
           onChange={({ target }) => setNewAuthor(target.value)}
         />
       </div>
       <div>
-        Url:
-        <input
+        <TextField
+          label='url'
           id='url'
-          type="text"
           value={newUrl}
-          name="NewUrl"
           onChange={({ target }) => setNewUrl(target.value)}
         />
       </div>
-      <button id="submit-blog-button" type="submit">save</button>
+      <Button
+        id="submit-blog-button"
+        type="submit"
+        variant="contained"
+        color="primary"
+      >
+        save
+      </Button>
     </form>
   )
 
