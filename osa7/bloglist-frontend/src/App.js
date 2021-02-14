@@ -14,7 +14,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-import Container from '@material-ui/core/Container'
+import { Container, AppBar, Toolbar, Button } from '@material-ui/core'
 import './index.css'
 
 import { setNotification } from './reducers/notificationReducer'
@@ -70,30 +70,28 @@ const App = () => {
     ? blogMatch.params.id
     : null
 
-  const padding = {
-    padding: 5
-  }
-
   const LoggedIn = ({ user }) => {
 
     return (
       <>
-        {user.name} logged in
-        <button className="logoutButton" type="button" onClick={logOut}>logout</button>
+        <Button color="inherit" className="logoutButton" type="button" onClick={logOut}>logout</Button>
+        ({user.name} logged in)
       </>
     )
   }
 
   return (
     <Container>
-      <div>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
-        {user === null
-          ? <></>
-          : <LoggedIn user={user}></LoggedIn>
-        }
-      </div>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">blogs</Button>
+          <Button color="inherit" component={Link} to="/users">users</Button>
+          {user === null
+            ? <></>
+            : <LoggedIn user={user}></LoggedIn>
+          }
+        </Toolbar>
+      </AppBar>
       <h2>Blog app</h2>
       <Notification />
       {user === null
