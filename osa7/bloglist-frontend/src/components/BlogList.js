@@ -3,7 +3,7 @@ import Blog from './Blog'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
-const BlogList = ({ user, removeBlog }) => {
+const BlogList = ({ user }) => {
 
   const blogs = useSelector(state => state.blogs)
 
@@ -17,7 +17,6 @@ const BlogList = ({ user, removeBlog }) => {
             key={blog.id}
             blog={blog}
             user={user}
-            removeBlog={removeBlog}
           />
         )}
     </div>
@@ -25,8 +24,7 @@ const BlogList = ({ user, removeBlog }) => {
 }
 
 BlogList.propTypes = {
-  user: PropTypes.object.isRequired,
-  removeBlog: PropTypes.func.isRequired
+  user: PropTypes.object.isRequired
 }
 
 export default BlogList

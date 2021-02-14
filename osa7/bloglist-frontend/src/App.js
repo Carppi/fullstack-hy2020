@@ -13,8 +13,6 @@ import { initializeBlogs } from './reducers/blogReducer'
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
-
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -55,12 +53,6 @@ const App = () => {
     dispatch(setNotification('User logged out', true))
   }
 
-  const removeBlog = (id) => {
-    blogService.deleteBlog(id)
-    setBlogs(blogs.filter(p => p.id !== id))
-    dispatch(setNotification(`${blogs.find(n => n.id === id).title} deleted`, true))
-  }
-
   return (
     <div>
       <h2>Blogs</h2>
@@ -72,7 +64,6 @@ const App = () => {
           <BlogForm />
           <BlogList
             user={user}
-            removeBlog={removeBlog}
           />
         </>
       }

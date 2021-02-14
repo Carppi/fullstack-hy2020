@@ -10,6 +10,11 @@ const blogReducer = (state = [], action) => {
         blog.id !== action.data.id ? blog : action.data
       )
 
+    case 'REMOVE_BLOG':
+      return state.filter(b =>
+        b.id !== action.data
+      )
+
     case 'NEW_BLOG':
       return state.concat(action.data)
 
@@ -19,6 +24,21 @@ const blogReducer = (state = [], action) => {
     default: return state
   }
 
+}
+
+export const removeBlog = (blog) => {
+
+  return async dispatch => {
+
+    await blogService.deleteBlog(blog.id)
+
+    dispatch({
+      type: 'REMOVE_BLOG',
+      data: blog.id
+    })
+
+    dispatch(setNotification(`${blog.title} deleted`, true))
+  }
 }
 
 export const likeBlog = (blog) => {
@@ -32,7 +52,7 @@ export const likeBlog = (blog) => {
   }
   const filteredBlog = changeUserToId(updatedBlog)
 
-  console.log('blog', blog,'updated', updatedBlog,'filtered', filteredBlog)
+  console.log('blog', blog, 'updated', updatedBlog, 'filtered', filteredBlog)
 
   return async dispatch => {
 
