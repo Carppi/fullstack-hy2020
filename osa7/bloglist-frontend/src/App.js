@@ -50,12 +50,6 @@ const App = () => {
     }
   }
 
-  const loginForm = () => (
-    <LoginForm
-      handleSubmit={handleLogin}
-    />
-  )
-
   const logOut = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     dispatch(setNotification('User logged out', true))
@@ -72,7 +66,7 @@ const App = () => {
       <h2>Blogs</h2>
       <Notification />
       {user === null ?
-        loginForm() :
+        <LoginForm handleSubmit={handleLogin} /> :
         <>
           <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
           <BlogForm />

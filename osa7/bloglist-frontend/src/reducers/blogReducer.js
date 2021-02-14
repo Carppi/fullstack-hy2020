@@ -21,17 +21,29 @@ const blogReducer = (state = [], action) => {
 
 }
 
-export const likeBlog = ({ blog }) => {
+export const likeBlog = (blog) => {
+
+  const updatedBlog = { ...blog, likes: blog.likes + 1 }
+
+  const changeUserToId = ({ user, ...rest }) => { //käytetty pohjana: https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83
+    return (
+      { ...rest, user: user.id }
+    )
+  }
+  const filteredBlog = changeUserToId(updatedBlog)
+
+  console.log('blog', blog,'updated', updatedBlog,'filtered', filteredBlog)
+
   return async dispatch => {
 
     try {
 
-      const changedBlog = await blogService
-        .update(blog.id, { ...blog, likes: blog.likes + 1 })
+      await blogService
+        .update(blog.id, filteredBlog)
 
       dispatch({
         type: 'LIKE',
-        data: { ...changedBlog }
+        data: { ...updatedBlog }
       })
     } catch (exception) {
       dispatch(setNotification('Error in liking the blog', false))
@@ -39,49 +51,6 @@ export const likeBlog = ({ blog }) => {
 
   }
 }
-
-/*const likeBlog = (id) => {
-    const blog = blogs.find(n => n.id === id)
-    const changedBlog = {
-      ...blog,
-      likes: blog.likes + 1
-    }
-    const filteredBlog = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-      user: blog.user.id
-    }
-
-    blogService
-      .update(id, filteredBlog)
-      .then(() => {
-        setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
-      })
-      .catch(() => {
-        showNotification('Error in liking the blog', false)
-      })
-  }*/
-
-/*export const addBlog = (blogObject, showNotification) => {
-
-  blogService
-    .create(blogObject)
-    .then(returnedBlog => {
-      createBlog(returnedBlog)
-      showNotification(
-        'A new blog "' + returnedBlog.title + '" by ' + returnedBlog.author + ' added',
-        true
-      )
-    })
-    .catch(error => {
-      showNotification(
-        'Adding a new blog failed due to the following error: ' + error,
-        false
-      )
-    })
-}*/
 
 export const createBlog = (blogObject) => {
 

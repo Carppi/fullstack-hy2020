@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
 import { likeBlog } from '../reducers/blogReducer'
 
 const Blog = ({ blog, user, removeBlog }) => {
 
   const [showAll, setShowAll] = useState(false)
+  const dispatch = useDispatch()
 
   const deleteBlog = () => {
     if (
@@ -30,7 +32,7 @@ const Blog = ({ blog, user, removeBlog }) => {
             <li>Url: {blog.url}</li>
             <li>Likes: {blog.likes}
               <button
-                onClick={() => likeBlog(blog)}
+                onClick={() => dispatch(likeBlog(blog))}
                 className="likeButton"
               >
                 like
