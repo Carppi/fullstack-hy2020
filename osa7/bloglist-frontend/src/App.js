@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  Switch, Route, useRouteMatch/*, Link*/
+  Switch, Route, useRouteMatch
 } from 'react-router-dom'
 
 import Notification from './components/Notification'
@@ -9,7 +9,7 @@ import LoginForm from './components/LoginForm'
 import BlogView from './components/BlogView'
 import Users from './components/Users'
 import User from './components/User'
-import SingleBlog from './components/SingleBlog'
+import Blog from './components/Blog'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -85,7 +85,7 @@ const App = () => {
               <Users />
             </Route>
             <Route path="/blogs/:id">
-              <SingleBlog id={blogId}/>
+              <Blog id={blogId}/>
             </Route>
             <Route path="/">
               <BlogView />
