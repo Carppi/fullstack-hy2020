@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector ,useDispatch } from 'react-redux'
 
-import BlogList from './components/BlogList'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
+import BlogView from './components/BlogView'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -67,8 +66,7 @@ const App = () => {
         <LoginForm handleSubmit={handleLogin} /> :
         <>
           <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
-          <BlogForm />
-          <BlogList />
+          <BlogView />
         </>
       }
     </div>
