@@ -4,6 +4,16 @@ import {
   Link
 } from 'react-router-dom'
 
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+} from '@material-ui/core'
+
 const Users = () => {
 
   const [users, setUsers] = useState([])
@@ -17,36 +27,38 @@ const Users = () => {
     const ContentTag = to ? Link : 'div'
 
     return (
-      <td>
+      <TableCell>
         <ContentTag to={to}>{children}</ContentTag>
-      </td>
+      </TableCell>
     )
   }
 
   return (
     <div>
       <h3>Users</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>blogs created</th>
-          </tr>
-        </thead>
-        {users === [] ? null :
-          <tbody>
-            {users
-              .sort((a, b) => b.likes - a.likes)
-              .map(user =>
-                <tr key={user.id}>
-                  <Td to={`/users/${user.id}`}>{user.name}</Td>
-                  <td>{user.blogs.length}</td>
-                </tr>
-              )}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>name</TableCell>
+              <TableCell>blogs created</TableCell>
+            </TableRow>
+          </TableHead>
+          {users === [] ? null :
+            <TableBody>
+              {users
+                .sort((a, b) => b.likes - a.likes)
+                .map(user =>
+                  <TableRow key={user.id}>
+                    <Td to={`/users/${user.id}`}>{user.name}</Td>
+                    <TableCell>{user.blogs.length}</TableCell>
+                  </TableRow>
+                )}
 
-          </tbody>
-        }
-      </table>
+            </TableBody>
+          }
+        </Table>
+      </TableContainer>
     </div>
   )
 }

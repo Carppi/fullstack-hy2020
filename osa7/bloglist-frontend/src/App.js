@@ -14,6 +14,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import Container from '@material-ui/core/Container'
 import './index.css'
 
 import { setNotification } from './reducers/notificationReducer'
@@ -84,7 +85,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Container>
       <div>
         <Link style={padding} to="/">blogs</Link>
         <Link style={padding} to="/users">users</Link>
@@ -114,7 +115,7 @@ const App = () => {
           </Switch>
         </>
       }
-    </div>
+    </Container>
   )
 }
 
