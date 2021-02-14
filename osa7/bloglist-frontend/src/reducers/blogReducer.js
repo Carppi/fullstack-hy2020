@@ -1,37 +1,68 @@
 import blogService from '../services/blogs'
+import { setNotification } from '../reducers/notificationReducer'
 
 const blogReducer = (state = [], action) => {
 
   switch (action.type) {
-  /*case 'LIKE':
+    case 'LIKE':
 
       return state.map(blog =>
         blog.id !== action.data.id ? blog : action.data
-      )*/
+      )
 
-  case 'NEW_BLOG':
-    return state.concat(action.data)
+    case 'NEW_BLOG':
+      return state.concat(action.data)
 
-  case 'INIT_BLOGS':
-    return action.data
+    case 'INIT_BLOGS':
+      return action.data
 
-  default: return state
+    default: return state
   }
 
 }
 
-/*export const likeTo = (blog) => {
+export const likeBlog = ({ blog }) => {
   return async dispatch => {
 
-    const changedBlog = await blogService
-      .update(blog.id, { ...blog, likes: blog.likes + 1 })
+    try {
 
-    dispatch({
-      type: 'LIKE',
-      data: { ...changedBlog }
-    })
+      const changedBlog = await blogService
+        .update(blog.id, { ...blog, likes: blog.likes + 1 })
+
+      dispatch({
+        type: 'LIKE',
+        data: { ...changedBlog }
+      })
+    } catch (exception) {
+      dispatch(setNotification('Error in liking the blog', false))
+    }
+
   }
-}*/
+}
+
+/*const likeBlog = (id) => {
+    const blog = blogs.find(n => n.id === id)
+    const changedBlog = {
+      ...blog,
+      likes: blog.likes + 1
+    }
+    const filteredBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id
+    }
+
+    blogService
+      .update(id, filteredBlog)
+      .then(() => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
+      })
+      .catch(() => {
+        showNotification('Error in liking the blog', false)
+      })
+  }*/
 
 /*export const addBlog = (blogObject, showNotification) => {
 
@@ -52,7 +83,8 @@ const blogReducer = (state = [], action) => {
     })
 }*/
 
-export const createBlog = ({ blogObject, showNotification }) => {
+export const createBlog = (blogObject) => {
+
   return async dispatch => {
     try {
       const newBlog = await blogService.create(blogObject)
@@ -60,15 +92,15 @@ export const createBlog = ({ blogObject, showNotification }) => {
         type: 'NEW_BLOG',
         data: newBlog
       })
-      showNotification(
+      dispatch(setNotification(
         'A new blog "' + newBlog.title + '" by ' + newBlog.author + ' added',
         true
-      )
+      ))
     } catch (exception) {
-      showNotification(
+      dispatch(setNotification(
         'Adding a new blog failed due to the following error: ' + exception,
         false
-      )
+      ))
     }
   }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { likeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, likeBlog, user, removeBlog }) => {
+const Blog = ({ blog, user, removeBlog }) => {
 
   const [showAll, setShowAll] = useState(false)
 
@@ -29,7 +30,7 @@ const Blog = ({ blog, likeBlog, user, removeBlog }) => {
             <li>Url: {blog.url}</li>
             <li>Likes: {blog.likes}
               <button
-                onClick={() => likeBlog(blog.id)}
+                onClick={() => likeBlog(blog)}
                 className="likeButton"
               >
                 like

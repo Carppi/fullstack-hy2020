@@ -3,7 +3,7 @@ import Blog from './Blog'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
-const BlogList = ({ likeBlog, user, removeBlog }) => {
+const BlogList = ({ user, removeBlog }) => {
 
   const blogs = useSelector(state => state.blogs)
 
@@ -16,7 +16,6 @@ const BlogList = ({ likeBlog, user, removeBlog }) => {
           <Blog
             key={blog.id}
             blog={blog}
-            likeBlog={likeBlog}
             user={user}
             removeBlog={removeBlog}
           />
@@ -26,7 +25,6 @@ const BlogList = ({ likeBlog, user, removeBlog }) => {
 }
 
 BlogList.propTypes = {
-  likeBlog: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   removeBlog: PropTypes.func.isRequired
 }
