@@ -25,21 +25,25 @@ const Blog = ({ id }) => {
   return (
     <div>
       <h2>{blog.title} by {blog.author}</h2>
-      <>
-        <ul>
-          <li>Url: <a href={blog.url}>{blog.url}</a></li>
-          <li>Likes: {blog.likes}
-            <button
-              onClick={() => dispatch(likeBlog(blog))}
-              className="likeButton"
-            >
-              like
-            </button>
-          </li>
-          <li>Added by: {blog.user.name}</li>
-        </ul>
-        {createdByUser ? <button className="deleteButton" onClick={() => deleteBlog()}>remove</button> : <></>}
-      </>
+      <ul>
+        <li>Url: <a href={blog.url}>{blog.url}</a></li>
+        <li>Likes: {blog.likes}
+          <button
+            onClick={() => dispatch(likeBlog(blog))}
+            className="likeButton"
+          >
+            like
+          </button>
+        </li>
+        <li>Added by: {blog.user.name}</li>
+      </ul>
+      {createdByUser ? <button className="deleteButton" onClick={() => deleteBlog()}>remove</button> : <></>}
+      <h3>Comments</h3>
+      <ul>
+        {blog.comments.map(comment =>
+          <li key={comment.id}>{comment.text}</li>
+        )}
+      </ul>
     </div>
   )
 }
