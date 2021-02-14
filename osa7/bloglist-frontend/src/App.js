@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react'
-import { useSelector ,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from "react-router-dom"
 
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -59,17 +63,23 @@ const App = () => {
   const user = useSelector(state => state.user)
 
   return (
-    <div>
-      <h2>Blogs</h2>
-      <Notification />
-      {user === null ?
-        <LoginForm handleSubmit={handleLogin} /> :
-        <>
-          <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
-          <BlogView />
-        </>
-      }
-    </div>
+    <Router>
+      <div>
+        <h2>Blogs</h2>
+        <Notification />
+        {user === null ?
+          <LoginForm handleSubmit={handleLogin} /> :
+          <>
+            <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
+            <Switch>
+              <Route path="/">
+                <BlogView />
+              </Route>
+            </Switch>
+          </>
+        }
+      </div>
+    </Router>
   )
 }
 
