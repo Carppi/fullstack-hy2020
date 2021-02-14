@@ -21,6 +21,15 @@ const blogReducer = (state = [], action) => {
     case 'INIT_BLOGS':
       return action.data
 
+    case 'NEW_COMMENT':
+      return state.map(blog => {
+        if (blog.id !== action.blogId) {
+          return blog
+        } else {
+          blog.comments = blog.comments.concat(action.commentObject)
+          return blog
+        }
+      })
     default: return state
   }
 
@@ -50,16 +59,26 @@ export const likeBlog = (blog) => {
       { ...rest, user: user.id }
     )
   }
-  const filteredBlog = changeUserToId(updatedBlog)
 
-  console.log('blog', blog, 'updated', updatedBlog, 'filtered', filteredBlog)
+  const changeCommentsToId = ({ comments, ...rest }) => {
+    return (
+      {
+        ...rest,
+        comments: comments.map(comment =>
+          comment.id
+        )
+      }
+    )
+  }
+  const filteredBlog = changeUserToId(updatedBlog)
+  const filteredBlog2 = changeCommentsToId(filteredBlog)
 
   return async dispatch => {
 
     try {
 
       await blogService
-        .update(blog.id, filteredBlog)
+        .update(blog.id, filteredBlog2)
 
       dispatch({
         type: 'LIKE',
@@ -92,6 +111,19 @@ export const createBlog = (blogObject) => {
       ))
     }
   }
+}
+
+export const createComment = (blogId, commentText) => {
+  const commentObject = { text: commentText }
+  return async dispatch => {
+    const savedComment = await blogService.createComment(blogId, commentObject)
+    await dispatch({
+      type: 'NEW_COMMENT',
+      commentObject: savedComment,
+      blogId
+    })
+  }
+
 }
 
 export const initializeBlogs = () => {

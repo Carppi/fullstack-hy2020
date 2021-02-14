@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { likeBlog, removeBlog, createComment } from '../reducers/blogReducer'
+//import BlogService from '../services/blogs'
 
 const Blog = ({ id }) => {
 
+  const [newComment, setNewComment] = useState('')
   const user = useSelector(state => state.user)
   const blog = useSelector(state => state.blogs).find(blog => blog.id === id)
 
@@ -17,11 +19,19 @@ const Blog = ({ id }) => {
     }
   }
 
+  const addComment = (event) => {
+    event.preventDefault()
+    dispatch(createComment(blog.id, newComment))
+
+    setNewComment('')
+  }
+
   if (!blog) {
     return null
   }
 
   const createdByUser = user.username === blog.user.username
+
   return (
     <div>
       <h2>{blog.title} by {blog.author}</h2>
@@ -39,6 +49,16 @@ const Blog = ({ id }) => {
       </ul>
       {createdByUser ? <button className="deleteButton" onClick={() => deleteBlog()}>remove</button> : <></>}
       <h3>Comments</h3>
+      <form onSubmit={addComment}>
+        <input
+          id='comment'
+          type='text'
+          value={newComment}
+          name="NewComment"
+          onChange={({ target }) => setNewComment(target.value)}
+        />
+        <button type="submit">add comment</button>
+      </form>
       <ul>
         {blog.comments.map(comment =>
           <li key={comment.id}>{comment.text}</li>
