@@ -25,7 +25,7 @@ const Users = () => {
 
   return (
     <div>
-      <h2>Users</h2>
+      <h3>Users</h3>
       <table>
         <thead>
           <tr>

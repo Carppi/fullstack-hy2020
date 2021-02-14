@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  Switch, Route, useRouteMatch
+  Switch, Route, useRouteMatch, Link
 } from 'react-router-dom'
 
 import Notification from './components/Notification'
@@ -69,14 +69,35 @@ const App = () => {
     ? blogMatch.params.id
     : null
 
+  const padding = {
+    padding: 5
+  }
+
+  const LoggedIn = ({ user }) => {
+
+    return (
+      <>
+        {user.name} logged in
+        <button className="logoutButton" type="button" onClick={logOut}>logout</button>
+      </>
+    )
+  }
+
   return (
     <div>
-      <h2>Blogs</h2>
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+        {user === null
+          ? <></>
+          : <LoggedIn user={user}></LoggedIn>
+        }
+      </div>
+      <h2>Blog app</h2>
       <Notification />
-      {user === null ?
-        <LoginForm handleSubmit={handleLogin} /> :
-        <>
-          <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
+      {user === null
+        ? <LoginForm handleSubmit={handleLogin} />
+        : <>
           <Switch>
             <Route path="/users/:id">
               <User />
@@ -85,7 +106,7 @@ const App = () => {
               <Users />
             </Route>
             <Route path="/blogs/:id">
-              <Blog id={blogId}/>
+              <Blog id={blogId} />
             </Route>
             <Route path="/">
               <BlogView />
