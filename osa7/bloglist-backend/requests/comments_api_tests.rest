@@ -1,0 +1,8 @@
+###
+//kommentin lisääminen tietokantaan
+POST http://localhost:3001/api/blogs/6002d4ec088c500678a073ef/comments
+Content-type: application/json
+
+{
+  "text": "first comment"
+}

@@ -2,7 +2,9 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 
+//hae blogit
 router.get('/', async (request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
@@ -10,6 +12,7 @@ router.get('/', async (request, response) => {
   response.json(blogs)
 })
 
+//poista blogi tietyllä id:llä
 router.delete('/:id', async (request, response) => {
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
@@ -29,6 +32,7 @@ router.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
+//muokkaa blogia id:llä
 router.put('/:id', async (request, response) => {
   const blog = request.body
 
@@ -36,6 +40,27 @@ router.put('/:id', async (request, response) => {
   response.json(updatedBlog.toJSON())
 })
 
+//lisää kommentti
+router.post('/:id/comments', async (request, response) => {
+  const comment = new Comment(request.body)
+  console.log(comment)
+  console.log(request.params.id)
+
+  if (!comment.text) {
+    return response.status(400).sendDate({ error: 'comment text missing' })
+  }
+
+  const savedComment = await comment.save()
+
+  const blog = await Blog.findById(request.params.id)
+  blog.comments = blog.comments.concat(savedComment._id)
+  await blog.save()
+
+  response.status(201).json(savedComment)
+
+})
+
+//lisää blogi
 router.post('/', async (request, response) => {
   const blog = new Blog(request.body)
 
