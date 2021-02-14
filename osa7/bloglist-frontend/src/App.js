@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  BrowserRouter as Router,
   Switch, Route/*, Link*/
 } from 'react-router-dom'
 
@@ -9,6 +8,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogView from './components/BlogView'
 import Users from './components/Users'
+import User from './components/User'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -64,26 +64,27 @@ const App = () => {
   const user = useSelector(state => state.user)
 
   return (
-    <Router>
-      <div>
-        <h2>Blogs</h2>
-        <Notification />
-        {user === null ?
-          <LoginForm handleSubmit={handleLogin} /> :
-          <>
-            <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
-            <Switch>
-              <Route path="/users">
-                <Users />
-              </Route>
-              <Route path="/">
-                <BlogView />
-              </Route>
-            </Switch>
-          </>
-        }
-      </div>
-    </Router>
+    <div>
+      <h2>Blogs</h2>
+      <Notification />
+      {user === null ?
+        <LoginForm handleSubmit={handleLogin} /> :
+        <>
+          <p>{user.name} logged in</p> <button className="logoutButton" type="button" onClick={logOut}>logout</button>
+          <Switch>
+            <Route path="/users/:id">
+              <User />
+            </Route>
+            <Route path="/users">
+              <Users />
+            </Route>
+            <Route path="/">
+              <BlogView />
+            </Route>
+          </Switch>
+        </>
+      }
+    </div>
   )
 }
 
