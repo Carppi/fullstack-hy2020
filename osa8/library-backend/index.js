@@ -115,6 +115,10 @@ const typeDefs = gql`
       author: String!
       genres: [String]
     ): Book
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -125,11 +129,9 @@ const resolvers = {
     allBooks: (root, args) => {
       let bookList = books
       if (args.author) {
-        console.log('author filter', args.author)
         bookList = bookList.filter(book => book.author === args.author)
       }
       if (args.genre) {
-        console.log('genre filter', args.genre)
         bookList = bookList.filter(book => book.genres.includes(args.genre))
       }
 
@@ -154,12 +156,27 @@ const resolvers = {
       }
       books = books.concat(book)
 
-      if(book.author && !authors.map(author => author.name).includes(book.author)) {
-        const author = {name: book.author, id: uuid(), born: null}
+      if (book.author && !authors.map(author => author.name).includes(book.author)) {
+        const author = { name: book.author, id: uuid(), born: null }
         authors = authors.concat(author)
       }
       return book
     },
+
+    editAuthor: (root, args) => {
+      const author = authors.find(a => a.name === args.name)
+      if (!author) {
+        return null
+      }
+
+      if (args.setBornTo) {
+        const updateAuthor = { ...author, born: args.setBornTo }
+        authors = authors.map(a => a.name === args.name ? updateAuthor : a)
+        return updateAuthor
+      }
+
+      return author
+    }
 
   }
 }
