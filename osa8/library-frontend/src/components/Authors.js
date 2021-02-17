@@ -1,5 +1,5 @@
-  
-import React, {useState} from 'react'
+
+import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { ALL_AUTHORS, SET_BORN_TO } from '../queries'
 
@@ -63,10 +63,14 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <div>
           name
-          <input
+          <select
             value={name}
             onChange={({ target }) => setName(target.value)}
-          />
+          >
+          {authors.map(author =>
+            <option value={author.name}>{author.name}</option>
+          )}
+          </select>
         </div>
         <div>
           born
