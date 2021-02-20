@@ -1,6 +1,6 @@
 const config = require('./utils/config')
-const { ApolloServer, gql } = require('apollo-server')
-const { v1: uuid } = require('uuid')
+const { ApolloServer, UserInputError, gql } = require('apollo-server')
+//const { v1: uuid } = require('uuid')
 const mongoose = require('mongoose')
 const Author = require('./models/author')
 const Book = require('./models/book')
@@ -151,7 +151,7 @@ const resolvers = {
       }*/
       if (args.genre) {
         bookList = bookList.filter(book => book.genres.includes(args.genre))
-      } //Filters should be updated
+      }
 
 
       return bookList
@@ -175,41 +175,57 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args) => {
-      const authors = await Author.find({})
 
-      let authorId = null
+      try {
+        const authors = await Author.find({})
 
-      if (args.author && !authors.map(author => author.name).includes(args.author)) {
-        const author = new Author({ name: args.author, born: null })
+        let authorId = null
 
-        const savedAuthor = await author.save()
-        authorId = savedAuthor.id
-        console.log(author, savedAuthor)
-      } else {
-        const author = await Author.findOne({ name: args.author })
-        authorId = author.id
+        if (args.author && !authors.map(author => author.name).includes(args.author)) {
+          const author = new Author({ name: args.author, born: null })
+
+          const savedAuthor = await author.save()
+          authorId = savedAuthor.id
+          console.log(author, savedAuthor)
+        } else {
+          const author = await Author.findOne({ name: args.author })
+          authorId = author.id
+        }
+
+        const book = new Book({
+          ...args,
+          author: authorId
+        })
+
+        await book.save()
+
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
       }
 
-      const book = new Book({
-        ...args,
-        author: authorId
-      })
-
-      return book.save()
+      return book
     },
 
     editAuthor: async (root, args) => {
 
-      const author = await Author.findOne({ name: args.name }, )
+      try {
+        const author = await Author.findOne({ name: args.name },)
 
-      if (!author) {
-        return null
-      }
+        if (!author) {
+          return null
+        }
 
-      if (args.setBornTo) {
-        author.born = args.setBornTo
-        const updateAuthor = await author.save()
-        return updateAuthor
+        if (args.setBornTo) {
+          author.born = args.setBornTo
+          const updateAuthor = await author.save()
+          return updateAuthor
+        }
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
       }
 
       return author
