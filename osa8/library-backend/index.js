@@ -142,18 +142,19 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      console.log('root',root,'args',args)
-      /*let bookList = books
-      if (args.author) {
+    allBooks: async (root, args) => {
+
+      let bookList = await Book.find({})
+
+      /*if (args.author) {
         bookList = bookList.filter(book => book.author === args.author)
-      }
+      }*/
       if (args.genre) {
         bookList = bookList.filter(book => book.genres.includes(args.genre))
-      }*/ //Filters should be updated
+      } //Filters should be updated
 
 
-      return Book.find({})
+      return bookList
     },
     allAuthors: () => Author.find({})
   },
@@ -200,7 +201,6 @@ const resolvers = {
     editAuthor: async (root, args) => {
 
       const author = await Author.findOne({ name: args.name }, )
-      console.log('args',args,'author',author)
 
       if (!author) {
         return null
