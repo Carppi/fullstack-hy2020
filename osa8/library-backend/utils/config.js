@@ -6,7 +6,7 @@ let MONGODB_URI = process.env.MONGODB_URI
   MONGODB_URI = process.env.TEST_MONGODB_URI
 }*/
 
-const JWT_SECRET = 'ASf&o9mXN$ThBGr6di97'
+const JWT_SECRET = process.env.JWT_SECRET
 
 module.exports = {
   MONGODB_URI,
