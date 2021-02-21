@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
-import _ from 'lodash'
 
-const Books = (props) => {
+const Recommendations = (props) => {
 
   const result = useQuery(ALL_BOOKS)
-  const [genreFilter, setGenreFilter] = useState(null)
+
+  const genreFilter = props.genre
 
   if (!props.show) {
     return null
@@ -18,14 +18,6 @@ const Books = (props) => {
 
   let books = result.data.allBooks
 
-  const genreList = books.map(book => {
-    const genres = book.genres
-    return genres
-  })
-  const flatGenreList = _.flattenDeep(genreList)
-  const uniqGenreList = _.uniq(flatGenreList).sort()
-  console.log('uniqGenres',uniqGenreList)
-
   if (genreFilter) {
     books = books
       .filter(book => book.genres.includes(genreFilter))
@@ -33,7 +25,8 @@ const Books = (props) => {
 
   return (
     <div>
-      <h2>books</h2>
+      <h2>recommendations</h2>
+      books in your favorite genre <b>{genreFilter}</b>
 
       <table>
         <tbody>
@@ -53,12 +46,8 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
-      {uniqGenreList.map(genre => 
-          <button key={genre} onClick={() => setGenreFilter(genre)}>{genre}</button>
-      )}
-      <button onClick={() => setGenreFilter(null)}>all genres</button>
     </div>
   )
 }
 
-export default Books
+export default Recommendations
