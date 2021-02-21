@@ -109,11 +109,13 @@ const resolvers = {
       return books.length
     }
   },
+  
+  Book: {
+
+  },
 
   Mutation: {
     addBook: async (root, args, { currentUser }) => {
-
-      console.log('currentUser', currentUser)
 
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
@@ -140,9 +142,10 @@ const resolvers = {
           author: authorId
         })
 
-        await book.save()
+        const savedBook = await book.save()
+        const populatedBook = await savedBook.populate('author').execPopulate()
 
-        return book
+        return populatedBook
 
       } catch (error) {
         throw new UserInputError(error.message, {

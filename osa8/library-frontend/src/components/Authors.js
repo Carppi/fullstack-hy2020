@@ -38,7 +38,6 @@ const Authors = (props) => {
   }
 
   const handleNameChange = (selectedOption) => {
-    console.log(selectedOption)
     setName(selectedOption.value)
   }
 
@@ -47,6 +46,38 @@ const Authors = (props) => {
     label: author.name
   })
   )
+
+  const birthyearChanger = () => {
+
+    if (props.currentUser) {
+      return (
+        <div>
+          <form onSubmit={submit}>
+            <div>
+              name
+              <Select
+                defaultValue={name}
+                onChange={handleNameChange}
+                options={authorOptions}
+              />
+            </div>
+            <div>
+              born
+              <input
+                type='number'
+                value={born}
+                onChange={({ target }) => setBorn(target.value)}
+              />
+            </div>
+            <button type='submit'>update author</button>
+          </form>
+        </div>
+      )
+    } else {
+      return <div>please login to edit the birthyear of an author</div>
+    }
+
+  }
 
   return (
     <div>
@@ -72,25 +103,7 @@ const Authors = (props) => {
         </tbody>
       </table>
       <h3>Set birthyear</h3>
-      <form onSubmit={submit}>
-        <div>
-          name
-          <Select
-            defaultValue={name}
-            onChange={handleNameChange}
-            options={authorOptions}
-          />
-        </div>
-        <div>
-          born
-          <input
-            type='number'
-            value={born}
-            onChange={({ target }) => setBorn(target.value)}
-          />
-        </div>
-        <button type='submit'>update author</button>
-      </form>
+      {birthyearChanger()}
 
     </div>
   )
