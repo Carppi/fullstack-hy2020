@@ -1,27 +1,35 @@
-import React from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import React, {useEffect} from 'react'
+import { useLazyQuery } from '@apollo/client'
+import { FILTER_BOOKS } from '../queries'
 
 const Recommendations = (props) => {
 
-  const result = useQuery(ALL_BOOKS)
 
   const genreFilter = props.genre
+
+  const [resultFiltered, { loading, data}] = useLazyQuery(FILTER_BOOKS, {
+    fetchPolicy: "cache-and-network"
+  })
+
+  useEffect( () => {
+    
+    resultFiltered({
+      variables: {
+        genre: genreFilter
+      }
+    })
+
+  }, [genreFilter, resultFiltered, props.show])
 
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (loading) {
     return <div>loading...</div>
   }
 
-  let books = result.data.allBooks
-
-  if (genreFilter) {
-    books = books
-      .filter(book => book.genres.includes(genreFilter))
-  }
+  const books = data.allBooks
 
   return (
     <div>
