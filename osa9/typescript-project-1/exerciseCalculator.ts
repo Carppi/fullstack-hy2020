@@ -1,5 +1,4 @@
 //solution built on top of the course example code for multiplier: https://fullstackopen.com/en/part9/first_steps_with_type_script
-
 interface ExerciseValues {
   target: number;
   exercises: number[];
@@ -23,35 +22,35 @@ const parseExerciseArguments = (args: Array<string>): ExerciseValues => {
       target: Number(args[2]),
       exercises: args.slice(3).map(x => {
         if(isNaN(Number(x))) {
-          throw new Error('Provided exercise values were not numbers!')
+          throw new Error('Provided exercise values were not numbers!');
         }
-        return Number(x)
+        return Number(x);
       })
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 const calculateExercises = (target: number, exerc: number[]): ReturnValues => {
 
-  const length = exerc.length
-  const avg = exerc.reduce((l, r) => l + r) / length
+  const length = exerc.length;
+  const avg = exerc.reduce((l, r) => l + r) / length;
 
   const ratingCalculator = (t: number, a: number): number => {
-    if (t == 0) {return 3}
-    const targetRatio = a / t
+    if (t == 0) {return 3;}
+    const targetRatio = a / t;
     if (targetRatio < 0.7) {
-      return 1
+      return 1;
     } else if (targetRatio < 1) {
-      return 2
+      return 2;
     } else {
-      return 3
+      return 3;
     }
-  }
+  };
   
   const ratingToText = (rating: number): string => {
-    switch (rating) {
+    switch (rating){
       case 1:
         return "you missed your target with over 30%, please consider adjusting your target.";
       case 2:
@@ -59,11 +58,11 @@ const calculateExercises = (target: number, exerc: number[]): ReturnValues => {
       case 3:
         return "very good, you exceeded your target";
       default:
-        return "unknown rating, rating should be integer between 1 and 3"
+        return "unknown rating, rating should be integer between 1 and 3";
     }
-  }
+  };
 
-  const rate = ratingCalculator(target, avg)
+  const rate = ratingCalculator(target, avg);
 
   const result: ReturnValues = {
     periodLength: length,
@@ -73,7 +72,7 @@ const calculateExercises = (target: number, exerc: number[]): ReturnValues => {
     ratingDescription: ratingToText(rate),
     target: target,
     average: avg
-  }
+  };
 
   
   /** returns
@@ -87,11 +86,12 @@ const calculateExercises = (target: number, exerc: number[]): ReturnValues => {
   
   return result;
   
-}
+};
 
 try {
   const { target, exercises } = parseExerciseArguments(process.argv);
   console.log(calculateExercises(target, exercises));
 } catch (e) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   console.log('Error, something bad happened, message: ', e.message);
 }
