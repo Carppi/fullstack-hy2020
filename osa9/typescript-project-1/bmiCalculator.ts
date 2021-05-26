@@ -44,3 +44,5 @@ try {
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
 }
+
+export {bmiCalculator};
