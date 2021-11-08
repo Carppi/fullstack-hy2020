@@ -34,6 +34,14 @@ const parseExerciseArguments = (args: Array<string>): ExerciseValues => {
 
 const calculateExercises = (target: number, exerc: number[]): ReturnValues => {
 
+  if(isNaN(target)) {
+    throw new Error('malformatted parameters');
+  }
+
+  if(exerc.length < 1 || isNaN(exerc[0])) {
+    throw new Error('malformatted parameters, exercises are not in number object format, e.g. [1, 3]');
+  }
+
   const length = exerc.length;
   const avg = exerc.reduce((l, r) => l + r) / length;
 
@@ -95,3 +103,5 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   console.log('Error, something bad happened, message: ', e.message);
 }
+
+export {calculateExercises};

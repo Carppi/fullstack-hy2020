@@ -23,6 +23,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./osa9/typescript-project-1/tsconfig.json"
+    "project": "./typescript-project-1/tsconfig.json"
   }
 }
