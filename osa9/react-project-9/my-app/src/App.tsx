@@ -16,26 +16,47 @@ const App = () => {
     }
   ];
 
-  //TODO Header component
-  //TODO Content component
-  //TODO Total component
+  interface CoursePart {
+    name: string;
+    exerciseCount: number;
+  }
 
-  return ( //TODO update references to components
-    <div>
-      <h1>{courseName}</h1>
-      <p>
-        {courseParts[0].name} {courseParts[0].exerciseCount}
-      </p>
-      <p>
-        {courseParts[1].name} {courseParts[1].exerciseCount}
-      </p>
-      <p>
-        {courseParts[2].name} {courseParts[2].exerciseCount}
-      </p>
+  //Header component should take care of 1. rendering the name of the course. 
+
+  const Header = ({name}: { name: string}) => (
+    <h1>{name}</h1>
+  );
+
+  //Content component should 1.render the names of the different parts and 2.the amount of exercises in each part
+
+  const Content = ({parts}: { parts: CoursePart[] }): JSX.Element => {
+    return (
+      <div>
+        {parts.map(part => (
+          <p key={part.name}>
+            {part.name} {part.exerciseCount}
+          </p>
+        ))}
+      </div>
+    )
+  };
+
+  //Total component should render the total sum of exercises in all parts.
+
+  const Total = ({parts}: { parts: CoursePart[] }) => {
+    return (
       <p>
         Number of exercises{" "}
-        {courseParts.reduce((carry, part) => carry + part.exerciseCount, 0)}
+        {parts.reduce((carry, part) => carry + part.exerciseCount, 0)}
       </p>
+    )
+  };
+
+  return (
+    <div>
+      <Header name={courseName} />
+      <Content parts={courseParts} />
+      <Total parts={courseParts} />
     </div>
   );
 };
