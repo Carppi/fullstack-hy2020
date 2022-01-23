@@ -10,7 +10,6 @@ export enum Gender {
   Other = 'other',
 }
 
-
 interface BaseEntry {
   id: string;
   description: string;
@@ -32,7 +31,7 @@ interface HospitalEntry extends BaseEntry {
     date: string;
     criteria: string;
   }
-} //TODO update
+}
 
 interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
@@ -48,7 +47,6 @@ interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
