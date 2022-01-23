@@ -1,10 +1,10 @@
 import diagnosisData from '../../data/diagnoses.json';
 
-import { Diagnose } from '../types';
+import { Diagnosis } from '../types';
 
-const diagnoses: Array<Diagnose> = diagnosisData;
+const diagnoses: Array<Diagnosis> = diagnosisData;
 
-const getEntries = (): Array<Diagnose> => {
+const getEntries = (): Array<Diagnosis> => {
   return diagnoses;
 };
 
