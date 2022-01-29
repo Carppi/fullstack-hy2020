@@ -5,7 +5,7 @@ import {
   useParams
 } from 'react-router-dom';
 
-import { /* Entry,  */Entry, Patient, /* Diagnosis */ } from "../types";
+import { Entry, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, addSensitivePatient } from "../state";
 
@@ -15,7 +15,7 @@ type DiagnosisCodeProps ={
 
 const PatientInfoPage = () => {
 
-  const [{ sensitivePatients }, dispatch] = useStateValue();
+  const [{ sensitivePatients, diagnoses }, dispatch] = useStateValue();
 
   const { id } = useParams<{ id: string }>();
 
@@ -52,12 +52,22 @@ const PatientInfoPage = () => {
 
     };
 
+    const diagnosisCodetoName = (code: string) => {
+      const potentialDiagnosis = Object.entries(diagnoses).find(d => d[0] == code);
+      if(potentialDiagnosis) {
+        return potentialDiagnosis[1].name;
+      } else {
+        return "no diagnosis found";
+      }
+
+    };
+
     const DiagnosesList = ({ diagnoseCodes }: DiagnosisCodeProps) => {
       if (diagnoseCodes) {
         console.log(diagnoseCodes);
         return (<List bulleted>
           {diagnoseCodes.map((code: string) => (
-            <List.Item key={code}>{code}</List.Item>
+            <List.Item key={code}>{code} {diagnosisCodetoName(code)}</List.Item>
           ))}
         </List>);
       } else {
