@@ -1,16 +1,29 @@
 import React from "react";
 import axios from "axios";
-import { Container, Icon, List } from "semantic-ui-react";
+import { Container, Header, Icon, List, Segment } from "semantic-ui-react";
 import {
   useParams
 } from 'react-router-dom';
 
-import { Entry, Patient } from "../types";
+import { Entry, Patient, HospitalEntry, HealthCheckEntry, OccupationalHealthcareEntry } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, addSensitivePatient } from "../state";
+import HealthRatingBar from "../components/HealthRatingBar";
 
 type DiagnosisCodeProps ={
   diagnoseCodes?: string[];
+};
+
+type HospitalEntryProps ={
+  entry: HospitalEntry;
+};
+
+type HealthCheckEntryProps ={
+  entry: HealthCheckEntry;
+};
+
+type OccupationalHealthEntryProps ={
+  entry: OccupationalHealthcareEntry;
 };
 
 const PatientInfoPage = () => {
@@ -52,6 +65,15 @@ const PatientInfoPage = () => {
 
     };
 
+    /**
+     * Helper function for exhaustive type checking
+     */
+    const assertNever = (value: never): never => {
+      throw new Error(
+        `Unhandled discriminated union member: ${JSON.stringify(value)}`
+      );
+    };
+
     const diagnosisCodetoName = (code: string) => {
       const potentialDiagnosis = Object.entries(diagnoses).find(d => d[0] == code);
       if(potentialDiagnosis) {
@@ -77,15 +99,52 @@ const PatientInfoPage = () => {
       }
     };
 
+
+    const HospitalEntry = ({entry}: HospitalEntryProps) => (
+      <Segment key={entry.id}>
+        <Header icon='hospital' content={entry.date} />
+        <i>{entry.description}</i>
+        <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
+      </Segment>
+    );
+
+    const HealthCheckEntry = ({entry}: HealthCheckEntryProps) => (
+      <Segment key={entry.id}>
+        <Header icon='stethoscope' content={entry.date} />
+        <i>{entry.description}</i>
+        <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
+        <Header>Result</Header>
+        <HealthRatingBar rating={entry.healthCheckRating} showText={true}/>
+      </Segment>
+    );
+
+    const OccupationalHealthEntry = ({entry}: OccupationalHealthEntryProps) => (
+      <Segment key={entry.id}>
+        <Header icon='user md' content={entry.date + ", " + entry.employerName} />
+        <i>{entry.description}</i>
+        <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
+      </Segment>
+    );
+
+    const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+      switch (entry.type) {
+        case "Hospital":
+          return <HospitalEntry entry={entry}/>;
+        case "HealthCheck":
+          return <HealthCheckEntry entry={entry}/>;
+        case "OccupationalHealthcare":
+          return <OccupationalHealthEntry entry={entry}/>;
+        default:
+          return assertNever(entry);
+      }
+    };
+
     const PatientEntries = () => {
       if(patient.entries && patient.entries.length > 0){
         return (
           <div>
             {patient.entries.map((entry: Entry) => (
-              <div key={entry.id}>
-                <p>{entry.date} <i>{entry.description}</i></p>
-                <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
-              </div>
+              <EntryDetails entry={entry} key={entry.id}/>
             ))}
           </div>
         );
