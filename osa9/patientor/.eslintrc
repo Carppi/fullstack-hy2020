@@ -30,6 +30,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./patientor/tsconfig.json"
+    "project": "tsconfig.json"
   }
 }

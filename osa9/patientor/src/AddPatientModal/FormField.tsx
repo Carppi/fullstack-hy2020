@@ -33,6 +33,30 @@ export const SelectField = ({
   </Form.Field>
 );
 
+// props for select field component
+type SelectFieldPropsType = {
+  name: string;
+  label: string;
+  options: string[];
+};
+
+export const SelectTypeField = ({
+  name,
+  label,
+  options
+}: SelectFieldPropsType) => (
+  <Form.Field>
+    <label>{label}</label>
+    <Field as="select" name={name} className="ui dropdown">
+      {options.map(option => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </Field>
+  </Form.Field>
+);
+
 interface TextProps extends FieldProps {
   label: string;
   placeholder: string;

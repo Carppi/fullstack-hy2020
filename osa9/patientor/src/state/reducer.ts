@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient, Diagnosis } from "../types";
+import { Patient, Diagnosis, Entry } from "../types";
 
 export type Action =
   | {
@@ -15,9 +15,16 @@ export type Action =
       payload: Patient;
     }
   | {
-    type: "SET_DIAGNOSIS_LIST";
-    payload: Diagnosis[];
-  };
+      type: "SET_DIAGNOSIS_LIST";
+      payload: Diagnosis[];
+  }
+  | {
+      type: "ADD_ENTRY";
+      payload: {
+        entry: Entry,
+        patientId: string
+      };
+    };
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -61,6 +68,44 @@ export const reducer = (state: State, action: Action): State => {
             ...state.diagnoses
           }
         };
+
+      case "ADD_ENTRY": {
+        const id = action.payload.patientId;
+        let updatedEntries: Entry[] = [];
+        
+        const patientToBeUpdated = Object.entries(state.sensitivePatients).find(p => p[0] === id);
+        if(patientToBeUpdated) {
+          const foundPatientEntries = patientToBeUpdated[1].entries;
+          if(foundPatientEntries) {
+            updatedEntries = foundPatientEntries;
+          }
+          updatedEntries.push(action.payload.entry);
+
+          const updatedPatient: Patient = {
+            ...patientToBeUpdated[1],
+            entries: updatedEntries
+          };
+          return {
+            ...state,
+            sensitivePatients: {
+              ...state.sensitivePatients,
+              [action.payload.patientId]: updatedPatient
+            }
+          };
+        }
+        /* if (patientToBeUpdated) {
+          const updatedEntries = [] = patientToBeUpdated[1].entries ? patientToBeUpdated[1].entries : action.payload.entry;
+          const updatedPatient: Patient = {
+            ...patientToBeUpdated[1],
+            entries: patientToBeUpdated[1].entries?.push()
+          };
+        } */
+        
+        return {
+          ...state,
+          sensitivePatients: state.sensitivePatients
+        };
+      }
     
     default:
       return state;
@@ -92,5 +137,15 @@ export const setDiagnosisList = (diagnoses: Diagnosis[]): Action => {
   return {
     type: 'SET_DIAGNOSIS_LIST',
     payload: diagnoses
+  };
+};
+
+export const addEntry = (entry: Entry, patientId: string): Action => {
+  return {
+    type: 'ADD_ENTRY',
+    payload: {
+      entry: entry,
+      patientId: patientId
+    }
   };
 };
