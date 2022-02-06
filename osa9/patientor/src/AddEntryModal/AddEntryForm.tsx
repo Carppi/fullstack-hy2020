@@ -3,7 +3,7 @@ import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
 import { SelectTypeField, TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
-import { EntryWithoutId, /* Diagnosis, HealthCheckRating */ } from "../types";
+import { EntryWithoutId, HealthCheckRating } from "../types";
 import { useStateValue } from "../state";
 
 /*
@@ -22,6 +22,46 @@ const typeOptions: string[] = [
   "OccupationalHealthcare"
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isHealthCheckRating = (param: any): param is HealthCheckRating => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return Object.values(HealthCheckRating).includes(param);
+};
+
+const isString = (text: unknown): text is string => {
+  return typeof text === 'string' || text instanceof String;
+};
+
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
+};
+
+const isType = (type: unknown): {
+  isType: boolean,
+  errorMessage: string
+} => {
+  if (!type || !isString(type)){
+    return {
+      isType: true,
+      errorMessage: "Incorrect or missing type"
+    };
+  } else {
+    
+    if(type === "Hospital" || type === "OccupationalHealthcare" || type === "HealthCheck") {
+      return {
+        isType: true,
+        errorMessage: ""
+      };
+    } else {
+      return {
+        isType: true,
+        errorMessage: "Type is available and string but the value is not Hospital, OccupationalHealthcare or HealthCheck. Choose again."
+      };
+    }
+
+  }
+};
+
 export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
   const [{ diagnoses }] = useStateValue();
 
@@ -36,23 +76,55 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
         healthCheckRating: 0
       }}
       onSubmit={onSubmit}
-      /* validate={values => {
-        const requiredError = "Field is required";
+      validate={values => {
+
+        const requiredStringError = "Field is required and in text format";
+
         const errors: { [field: string]: string } = {};
-        if (!values.description) {
-          errors.description = requiredError;
+        if (!values.description || !isString(values.description)) {
+          errors.description = requiredStringError;
         }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
+        if (!values.specialist || !isString(values.specialist)) {
+          errors.specialist = requiredStringError;
         }
-        if (!values.date) {
-          errors.date = requiredError;
+        
+        const date = values.date;
+        if (!date || !isString(date) || !isDate(date)) {
+          errors.date = 'Incorrect or missing date: ' + date + '. Use format YYYY-MM-DD';
         }
-        if (!values.type) {
-          errors.type = requiredError;
+
+        const typeCheck = isType(values.type);
+        if (!typeCheck.isType) {
+          errors.type = typeCheck.errorMessage;
         }
+
+        if (values.diagnosisCodes) {
+          if (values.diagnosisCodes.every(d => (
+            Object.keys(diagnoses).includes(d)
+          ))) {
+            errors.diagnosisCodes = "All diagnosis codes do not match the directory";
+          }
+        }
+        switch (values.type) {
+          case "Hospital":
+            break;
+          case "HealthCheck":
+            if (typeof values.healthCheckRating === 'undefined' || values.healthCheckRating === null) {
+              errors.healthCheckRating = "Health check rating is required";
+            } else {
+              if (!isHealthCheckRating(values.healthCheckRating)) {
+                errors.healthCheckRating = `Health check rating incorrect. Accepted values are 0 (Healthy), 1 (LowRisk), 2 (HighRisk), and 3 (CriticalRisk)`;
+              }
+            }
+            break;
+          case "OccupationalHealthcare":
+            break;
+          default:
+            
+        }
+        
         return errors;
-      }} */
+      }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
