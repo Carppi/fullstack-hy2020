@@ -6,10 +6,6 @@ import { SelectTypeField, TextField, DiagnosisSelection, NumberField } from "../
 import { EntryWithoutId, HealthCheckRating } from "../types";
 import { useStateValue } from "../state";
 
-/*
- * use type Entry, but omit id,
- * because it is irrelevant for new entry object.
- */
 
 interface Props {
   onSubmit: (values: EntryWithoutId) => void;
