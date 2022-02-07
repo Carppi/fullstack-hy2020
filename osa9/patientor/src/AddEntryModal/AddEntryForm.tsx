@@ -42,7 +42,7 @@ const isType = (type: unknown): {
 } => {
   if (!type || !isString(type)){
     return {
-      isType: true,
+      isType: false,
       errorMessage: "Incorrect or missing type"
     };
   } else {
@@ -54,8 +54,8 @@ const isType = (type: unknown): {
       };
     } else {
       return {
-        isType: true,
-        errorMessage: "Type is available and string but the value is not Hospital, OccupationalHealthcare or HealthCheck. Choose again."
+        isType: false,
+        errorMessage: "Type is available as string but the value is not Hospital, OccupationalHealthcare or HealthCheck. Choose again."
       };
     }
 
@@ -129,6 +129,11 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
+            <SelectTypeField
+              label="Type"
+              name="type"
+              options={typeOptions}
+            />
             <Field
               label="Description"
               placeholder="Description"
@@ -146,11 +151,6 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
               placeholder="YYYY-MM-DD"
               name="date"
               component={TextField}
-            />
-            <SelectTypeField
-              label="Type"
-              name="type"
-              options={typeOptions}
             />
             <DiagnosisSelection
               setFieldValue={setFieldValue}
