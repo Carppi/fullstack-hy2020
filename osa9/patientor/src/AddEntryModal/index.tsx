@@ -8,15 +8,16 @@ interface Props {
   onClose: () => void;
   onSubmit: (values: EntryWithoutId) => void;
   error?: string;
-  formName: string
+  formName: string;
+  entryType: "HealthCheck" | "Hospital" | "OccupationalHealthcare"
 }
 
-const AddEntryModal = ({ modalOpen, onClose, onSubmit, error, formName }: Props) => (
+const AddEntryModal = ({ modalOpen, onClose, onSubmit, error, formName, entryType }: Props) => (
   <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
     <Modal.Header>Add a new entry for {formName}</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-      <AddEntryForm onSubmit={onSubmit} onCancel={onClose} entryType="HealthCheck"/>
+      <AddEntryForm onSubmit={onSubmit} onCancel={onClose} entryType={entryType}/>
     </Modal.Content>
   </Modal>
 );

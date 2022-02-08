@@ -33,14 +33,27 @@ const PatientInfoPage = () => {
   const [{ sensitivePatients, diagnoses }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [hospitalModalOpen, setHospitalModalOpen] = React.useState<boolean>(false);
+  const [occupationalModalOpen, setOccupationalModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
 
   const openModal = (): void => setModalOpen(true);
+  const openHospitalModal = (): void => setHospitalModalOpen(true);
+  const openOccupationalModal = (): void => setOccupationalModalOpen(true);
 
   const closeModal = (): void => {
     setModalOpen(false);
     setError(undefined);
   };
+  const closeHospitalModal = (): void => {
+    setHospitalModalOpen(false);
+    setError(undefined);
+  };
+  const closeOccupationalModal = (): void => {
+    setOccupationalModalOpen(false);
+    setError(undefined);
+  };
+  
 
   const { id } = useParams<{ id: string }>();
 
@@ -52,6 +65,8 @@ const PatientInfoPage = () => {
       );
       dispatch(addEntry(newEntry, id));
       closeModal();
+      closeHospitalModal();
+      closeOccupationalModal();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.error(e.response?.data || 'Unknown Error');
@@ -113,7 +128,6 @@ const PatientInfoPage = () => {
 
     const DiagnosesList = ({ diagnoseCodes }: DiagnosisCodeProps) => {
       if (diagnoseCodes) {
-        console.log(diagnoseCodes);
         return (<List bulleted>
           {diagnoseCodes.map((code: string) => (
             <List.Item key={code}>{code} {diagnosisCodetoName(code)}</List.Item>
@@ -129,26 +143,40 @@ const PatientInfoPage = () => {
 
     const HospitalEntry = ({entry}: HospitalEntryProps) => (
       <Segment key={entry.id}>
-        <Header icon='hospital' content={entry.date} />
-        <i>{entry.description}</i>
+        <Header icon='hospital' content={`${entry.date} (specialist: ${entry.specialist})`} />
+        <i>Description: {entry.description}</i> <br/>
+        <i>Patient was discharged on {entry.discharge.date} based on the following criteria: {entry.discharge.criteria}</i>
         <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
       </Segment>
     );
 
     const HealthCheckEntry = ({entry}: HealthCheckEntryProps) => (
       <Segment key={entry.id}>
-        <Header icon='stethoscope' content={entry.date} />
-        <i>{entry.description}</i>
+        <Header icon='stethoscope' content={`${entry.date} (specialist: ${entry.specialist})`} />
+        <i>Description: {entry.description}</i>
         <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
         <Header>Result</Header>
         <HealthRatingBar rating={entry.healthCheckRating} showText={true}/>
       </Segment>
     );
 
+    interface SickLeaveProps {
+      sickLeave?: {startDate: string, endDate: string}
+    }
+
+    const SickLeave = ({sickLeave}: SickLeaveProps) => {
+      if(sickLeave){
+        return <i>Sick leave from {sickLeave.startDate} to {sickLeave.endDate}</i>;
+      } else {
+        return null;
+      }
+    };
+
     const OccupationalHealthEntry = ({entry}: OccupationalHealthEntryProps) => (
       <Segment key={entry.id}>
-        <Header icon='user md' content={entry.date + ", " + entry.employerName} />
-        <i>{entry.description}</i>
+        <Header icon='user md' content={`${entry.date}, ${entry.employerName} (specialist: ${entry.specialist})`} />
+        <i>Description: {entry.description}</i><br/>
+        <SickLeave sickLeave={entry.sickLeave}/>
         <DiagnosesList diagnoseCodes={entry.diagnosisCodes} />
       </Segment>
     );
@@ -198,8 +226,27 @@ const PatientInfoPage = () => {
           error={error}
           onClose={closeModal}
           formName='Health Check'
+          entryType="HealthCheck"
         />
-        <Button onClick={() => openModal()}>Add New Entry</Button>
+        <AddEntryModal
+          modalOpen={hospitalModalOpen}
+          onSubmit={submitNewEntry}
+          error={error}
+          onClose={closeHospitalModal}
+          formName='Hospital'
+          entryType="Hospital"
+        />
+        <AddEntryModal
+          modalOpen={occupationalModalOpen}
+          onSubmit={submitNewEntry}
+          error={error}
+          onClose={closeOccupationalModal}
+          formName='Occupational Healthcare'
+          entryType="OccupationalHealthcare"
+        />
+        <Button onClick={() => openModal()}>Add New Health Check Entry</Button>
+        <Button onClick={() => openHospitalModal()}>Add New Hospital Entry</Button>
+        <Button onClick={() => openOccupationalModal()}>Add New Occupational Entry</Button>
       </div>
     );
   } else {

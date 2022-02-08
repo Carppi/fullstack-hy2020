@@ -1,5 +1,5 @@
 import React from "react";
-import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
+import { ErrorMessage,Field, FieldProps, FormikProps } from "formik";
 import { Dropdown, DropdownProps, Form } from "semantic-ui-react";
 import { Diagnosis, Gender } from "../types";
 
@@ -69,19 +69,21 @@ interface TextProps extends FieldProps {
   placeholder: string;
 }
 
-export const TextField= ({
+export const TextField: React.FC<TextProps>= ({
   field,
   label,
   placeholder
-}: TextProps) => (
-  <Form.Field>
-    <label>{label}</label>
-    <Field placeholder={placeholder} {...field} />
-    <div style={{ color:'red' }}>
-      <ErrorMessage name={field.name} />
-    </div>
-  </Form.Field>
-);
+}: TextProps) => {
+  return (
+    <Form.Field>
+      <label>{label}</label>
+      <Field placeholder={placeholder} {...field} />
+      <div style={{ color:'red' }}>
+        <ErrorMessage name={field.name}/>
+      </div>
+    </Form.Field>
+  );
+};
 
 /*
   for exercises 9.24.-
