@@ -197,6 +197,7 @@ const PatientInfoPage = () => {
           onSubmit={submitNewEntry}
           error={error}
           onClose={closeModal}
+          formName='Health Check'
         />
         <Button onClick={() => openModal()}>Add New Entry</Button>
       </div>

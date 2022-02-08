@@ -41,21 +41,28 @@ type SelectFieldPropsType = {
 };
 
 export const SelectTypeField = ({
-  name,
   label,
+  name,
   options
-}: SelectFieldPropsType) => (
-  <Form.Field>
-    <label>{label}</label>
-    <Field as="select" name={name} className="ui dropdown">
-      {options.map(option => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </Field>
-  </Form.Field>
-);
+}: SelectFieldPropsType) => {
+  
+  return (
+    <Form.Field>
+      <label>{label}</label>
+      <Field 
+        as="select" 
+        name={name} 
+        className="ui dropdown"
+      >
+        {options.map(option => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </Field>
+    </Form.Field>
+  );
+};
 
 interface TextProps extends FieldProps {
   label: string;
